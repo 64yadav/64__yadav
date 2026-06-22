@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Excel Complete Notes — Data Analytics ke liye</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Inter:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --bg: #0a120a;
+    --surface: #0f1a0f;
+    --card: #131f13;
+    --border: #1a2e1a;
+    --accent: #4ade80;
+    --accent2: #86efac;
+    --blue: #60a5fa;
+    --yellow: #fbbf24;
+    --purple: #c084fc;
+    --red: #f87171;
+    --teal: #2dd4bf;
+    --orange: #fb923c;
+    --text: #e2e8f0;
+    --muted: #7a8f7a;
+    --code-bg: #060d06;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.7;
+  }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(160deg, #0a120a 0%, #0d1f0d 60%, #0a120a 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 56px 24px 48px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -80px; left: 50%; transform: translateX(-50%);
+    width: 600px; height: 300px;
+    background: radial-gradient(ellipse, rgba(74,222,128,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-tag {
+    display: inline-block;
+    background: rgba(74,222,128,0.10);
+    color: var(--accent);
+    border: 1px solid rgba(74,222,128,0.28);
+    border-radius: 20px;
+    padding: 4px 16px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+  }
+  .hero h1 {
+    font-size: clamp(30px, 6vw, 52px);
+    font-weight: 700;
+    line-height: 1.15;
+    margin-bottom: 14px;
+    letter-spacing: -0.5px;
+  }
+  .hero h1 span { color: var(--accent); }
+  .hero p { color: var(--muted); font-size: 15px; max-width: 540px; margin: 0 auto 28px; }
+  .hero-pills { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+  .pill {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  /* LAYOUT */
+  .container { max-width: 940px; margin: 0 auto; padding: 36px 20px 72px; }
+
+  /* TOC */
+  .toc {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 26px;
+    margin-bottom: 44px;
+  }
+  .toc-label { color: var(--accent); font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 16px; }
+  .toc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 6px; }
+  .toc-item {
+    color: var(--muted); font-size: 13px; padding: 7px 12px;
+    border-radius: 8px; text-decoration: none;
+    display: flex; align-items: center; gap: 8px;
+    transition: background 0.15s, color 0.15s;
+  }
+  .toc-item:hover { background: var(--border); color: var(--text); }
+  .tnum { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--accent); min-width: 22px; }
+
+  /* SECTION */
+  .sec { margin-bottom: 52px; }
+  .sec-hdr {
+    display: flex; align-items: flex-start; gap: 14px;
+    margin-bottom: 24px; padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .sec-icon {
+    font-size: 20px; width: 44px; height: 44px;
+    background: rgba(74,222,128,0.07);
+    border: 1px solid rgba(74,222,128,0.18);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .sec-hdr h2 { font-size: 21px; font-weight: 700; margin-bottom: 3px; }
+  .sec-sub { color: var(--muted); font-size: 13px; }
+
+  /* CARD */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 22px 24px;
+    margin-bottom: 16px;
+  }
+  .card-title { font-size: 15px; font-weight: 600; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .card p { color: var(--muted); font-size: 14px; margin-bottom: 10px; }
+
+  /* BADGES */
+  .badge { display: inline-block; padding: 2px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+  .b-green  { background: rgba(74,222,128,0.10); color: var(--accent);  border: 1px solid rgba(74,222,128,0.25); }
+  .b-blue   { background: rgba(96,165,250,0.10); color: var(--blue);    border: 1px solid rgba(96,165,250,0.25); }
+  .b-yellow { background: rgba(251,191,36,0.10); color: var(--yellow);  border: 1px solid rgba(251,191,36,0.25); }
+  .b-purple { background: rgba(192,132,252,0.10);color: var(--purple);  border: 1px solid rgba(192,132,252,0.25); }
+  .b-red    { background: rgba(248,113,113,0.10);color: var(--red);     border: 1px solid rgba(248,113,113,0.25); }
+  .b-orange { background: rgba(251,146,60,0.10); color: var(--orange);  border: 1px solid rgba(251,146,60,0.25); }
+  .b-teal   { background: rgba(45,212,191,0.10); color: var(--teal);    border: 1px solid rgba(45,212,191,0.25); }
+
+  /* CODE */
+  .code-block { background: var(--code-bg); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin: 14px 0; }
+  .code-hdr {
+    background: #080f08; padding: 8px 16px;
+    display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+  }
+  .code-lang { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--accent); letter-spacing: 1.5px; text-transform: uppercase; }
+  .dots { display: flex; gap: 5px; }
+  .dot { width: 9px; height: 9px; border-radius: 50%; }
+  .dr { background: #ff5f57; } .dy { background: #ffbd2e; } .dg { background: #28ca41; }
+  pre { padding: 16px 18px; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 1.9; }
+  .fn  { color: #79c0ff; }
+  .str { color: #a5d6ff; }
+  .num { color: #f8c555; }
+  .cm  { color: #3a4a3a; font-style: italic; }
+  .op  { color: #ff7b72; }
+  .acc { color: var(--accent); font-weight: 600; }
+  .ref { color: #ffa657; }
+
+  /* BOXES */
+  .use-box {
+    background: rgba(74,222,128,0.04); border: 1px solid rgba(74,222,128,0.15);
+    border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0;
+    padding: 12px 16px; margin: 12px 0; font-size: 14px;
+  }
+  .use-box strong { color: var(--accent); display: block; margin-bottom: 4px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.8px; }
+  .warn-box {
+    background: rgba(248,113,113,0.04); border: 1px solid rgba(248,113,113,0.15);
+    border-left: 3px solid var(--red); border-radius: 0 8px 8px 0;
+    padding: 12px 16px; margin: 12px 0; font-size: 14px;
+  }
+  .warn-box strong { color: var(--red); display: block; margin-bottom: 4px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.8px; }
+  .tip {
+    background: rgba(192,132,252,0.04); border: 1px solid rgba(192,132,252,0.15);
+    border-radius: 8px; padding: 13px 17px; margin: 13px 0; font-size: 14px; color: #d8b4fe;
+  }
+  .tip::before { content: '💡 Pro Tip: '; font-weight: 700; }
+  .info-box {
+    background: rgba(96,165,250,0.04); border: 1px solid rgba(96,165,250,0.15);
+    border-left: 3px solid var(--blue); border-radius: 0 8px 8px 0;
+    padding: 12px 16px; margin: 12px 0; font-size: 14px;
+  }
+  .info-box strong { color: var(--blue); display: block; margin-bottom: 4px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.8px; }
+
+  /* TABLE */
+  .tbl-wrap { overflow-x: auto; margin: 14px 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  th { background: #080f08; color: var(--accent); padding: 10px 14px; text-align: left; font-size: 11px; letter-spacing: 0.8px; text-transform: uppercase; border: 1px solid var(--border); font-weight: 600; }
+  td { padding: 10px 14px; border: 1px solid var(--border); color: var(--muted); vertical-align: top; }
+  tr:nth-child(even) td { background: rgba(255,255,255,0.012); }
+  td code { font-family: 'JetBrains Mono', monospace; color: var(--accent); font-size: 12px; background: rgba(74,222,128,0.07); padding: 2px 7px; border-radius: 4px; }
+  td strong { color: var(--text); }
+
+  /* GRID */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .three-col { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
+  @media (max-width: 640px) { .two-col, .three-col { grid-template-columns: 1fr; } }
+
+  /* FORMULA CARD */
+  .f-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-top: 2px solid var(--accent);
+    border-radius: 0 0 12px 12px;
+    padding: 20px 22px;
+    margin-bottom: 20px;
+  }
+  .f-name { font-family: 'JetBrains Mono', monospace; font-size: 16px; color: var(--accent); font-weight: 600; margin-bottom: 4px; }
+  .f-desc { font-size: 13px; color: var(--muted); margin-bottom: 12px; }
+
+  /* SHORTCUT */
+  .shortcuts { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr)); gap: 10px; }
+  .sc {
+    background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+    padding: 12px 16px; display: flex; align-items: center; gap: 12px;
+  }
+  .sc-key {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    background: rgba(74,222,128,0.08); border: 1px solid rgba(74,222,128,0.2);
+    color: var(--accent); padding: 4px 10px; border-radius: 6px; white-space: nowrap;
+    min-width: fit-content;
+  }
+  .sc-desc { font-size: 13px; color: var(--muted); }
+
+  /* STEPS */
+  .steps { display: flex; flex-direction: column; gap: 14px; }
+  .step { display: flex; gap: 14px; align-items: flex-start; }
+  .snum { width: 28px; height: 28px; min-width: 28px; background: var(--accent); color: #0a120a; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; margin-top: 2px; }
+  .sbody h4 { font-size: 14px; font-weight: 600; margin-bottom: 3px; }
+  .sbody p { font-size: 13px; color: var(--muted); }
+
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  .footer { text-align: center; padding: 36px 24px; color: var(--muted); font-size: 13px; border-top: 1px solid var(--border); }
+  .footer strong { color: var(--accent); }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-tag">Data Analytics</div>
+  <h1>Excel <span>Complete Notes</span></h1>
+  <p>Formulas, Data Cleaning, Pivot Tables, Charts — sab kuch ek jagah, Hindi mein</p>
+  <div class="hero-pills">
+    <span class="pill">📐 Formulas & Functions</span>
+    <span class="pill">🧹 Data Cleaning</span>
+    <span class="pill">🔍 Lookup Functions</span>
+    <span class="pill">📊 Pivot Tables</span>
+    <span class="pill">📈 Charts</span>
+    <span class="pill">⚡ Shortcuts</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- TOC -->
+  <div class="toc">
+    <div class="toc-label">📋 Topics</div>
+    <div class="toc-grid">
+      <a href="#basics" class="toc-item"><span class="tnum">01</span> Excel Basics</a>
+      <a href="#math" class="toc-item"><span class="tnum">02</span> Math Functions</a>
+      <a href="#text" class="toc-item"><span class="tnum">03</span> Text Functions</a>
+      <a href="#logical" class="toc-item"><span class="tnum">04</span> Logical Functions</a>
+      <a href="#lookup" class="toc-item"><span class="tnum">05</span> Lookup Functions</a>
+      <a href="#date" class="toc-item"><span class="tnum">06</span> Date Functions</a>
+      <a href="#clean" class="toc-item"><span class="tnum">07</span> Data Cleaning</a>
+      <a href="#pivot" class="toc-item"><span class="tnum">08</span> Pivot Tables</a>
+      <a href="#charts" class="toc-item"><span class="tnum">09</span> Charts</a>
+      <a href="#shortcuts" class="toc-item"><span class="tnum">10</span> Shortcuts</a>
+    </div>
+  </div>
+
+  <!-- 01 BASICS -->
+  <div class="sec" id="basics">
+    <div class="sec-hdr">
+      <div class="sec-icon">📋</div>
+      <div>
+        <h2>Excel Basics — Samajhna Zaroori Hai</h2>
+        <div class="sec-sub">Foundation solid hogi toh sab aasaan lagega</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Cell Reference — Teen Types</div>
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>Type</th><th>Example</th><th>Matlab</th><th>Kab Use Karo</th></tr>
+          <tr><td><strong>Relative</strong></td><td><code>A1</code></td><td>Copy karne pe row/column change hoti hai</td><td>Normal formulas mein — default</td></tr>
+          <tr><td><strong>Absolute</strong></td><td><code>$A$1</code></td><td>Copy karne pe bhi same rehta hai</td><td>Tax rate, fixed value reference</td></tr>
+          <tr><td><strong>Mixed</strong></td><td><code>$A1</code> ya <code>A$1</code></td><td>Sirf column ya sirf row fix hoti hai</td><td>Multiplication tables, complex formulas</td></tr>
+        </table>
+      </div>
+      <div class="tip">F4 dabao — Reference type toggle hota hai: A1 → $A$1 → A$1 → $A1. Sabse kaam ki shortcut!</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Excel mein Data Types</div>
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>Type</th><th>Pehchaan</th><th>Problem</th></tr>
+          <tr><td><strong>Number</strong></td><td>Right align hota hai</td><td>Agar left align hai — text ban gaya hai</td></tr>
+          <tr><td><strong>Text</strong></td><td>Left align hota hai</td><td>SUM karne pe 0 aata hai</td></tr>
+          <tr><td><strong>Date</strong></td><td>Right align, date format</td><td>Galat format mein text ban jaata hai</td></tr>
+          <tr><td><strong>Boolean</strong></td><td>TRUE / FALSE — center align</td><td>IF formula se aata hai</td></tr>
+        </table>
+      </div>
+      <div class="warn-box">
+        <strong>⚠️ Sabse Common Problem</strong>
+        Numbers text ke roop mein stored ho jaate hain — isliye SUM kaam nahi karta. Cell ke corner mein green triangle aaye toh yahi problem hai. VALUE() function se fix hota hai.
+      </div>
+    </div>
+  </div>
+
+  <!-- 02 MATH FUNCTIONS -->
+  <div class="sec" id="math">
+    <div class="sec-hdr">
+      <div class="sec-icon">🔢</div>
+      <div>
+        <h2>Math & Statistical Functions</h2>
+        <div class="sec-sub">Numbers ke saath kaam — data analytics ka core</div>
+      </div>
+    </div>
+
+    <div class="f-card">
+      <div class="f-name">SUM / SUMIF / SUMIFS</div>
+      <div class="f-desc">Jodna — condition ke saath ya bina</div>
+      <div class="code-block">
+        <div class="code-hdr"><div class="dots"><div class="dot dr"></div><div class="dot dy"></div><div class="dot dg"></div></div><span class="code-lang">EXCEL</span></div>
+        <pre><span class="cm">-- Simple sum</span>
+=<span class="fn">SUM</span>(<span class="ref">B2:B100</span>)
+
+<span class="cm">-- Sirf "Delhi" wali rows ka sum</span>
+=<span class="fn">SUMIF</span>(<span class="ref">A2:A100</span>, <span class="str">"Delhi"</span>, <span class="ref">B2:B100</span>)
+
+<span class="cm">-- Delhi AND amount > 5000 wali rows</span>
+=<span class="fn">SUMIFS</span>(<span class="ref">B2:B100</span>, <span class="ref">A2:A100</span>, <span class="str">"Delhi"</span>, <span class="ref">B2:B100</span>, <span class="str">">"</span>&<span class="num">5000</span>)
+
+<span class="cm">-- Is mahine ki sales</span>
+=<span class="fn">SUMIFS</span>(<span class="ref">D2:D100</span>, <span class="ref">C2:C100</span>, <span class="str">">="</span>&<span class="fn">DATE</span>(<span class="num">2024</span>,<span class="num">1</span>,<span class="num">1</span>), <span class="ref">C2:C100</span>, <span class="str">"<="</span>&<span class="fn">DATE</span>(<span class="num">2024</span>,<span class="num">1</span>,<span class="num">31</span>))</pre>
+      </div>
+      <div class="use-box"><strong>✅ Kab Use Karo</strong>Total revenue, category-wise sales, date range mein jodna. SUMIFS sabse zyada use hoti hai — multiple conditions ke saath.</div>
+    </div>
+
+    <div class="f-card">
+      <div class="f-name">COUNT / COUNTA / COUNTIF / COUNTIFS</div>
+      <div class="f-desc">Ginana — numbers, text, ya condition ke saath</div>
+      <div class="code-block">
+        <div class="code-hdr"><div class="dots"><div class="dot dr"></div><div class="dot dy"></div><div class="dot dg"></div></div><span class="code-lang">EXCEL</span></div>
+        <pre><span class="cm">-- Sirf numbers count</span>
+=<span class="fn">COUNT</span>(<span class="ref">A2:A100</span>)
+
+<span class="cm">-- Sab kuch count (text bhi)</span>
+=<span class="fn">COUNTA</span>(<span class="ref">A2:A100</span>)
+
+<span class="cm">-- Kitne "Delhi" hain?</span>
+=<span class="fn">COUNTIF</span>(<span class="ref">A2:A100</span>, <span class="str">"Delhi"</span>)
+
+<span class="cm">-- Delhi mein 5000 se zyada orders</span>
+=<span class="fn">COUNTIFS</span>(<span class="ref">A2:A100</span>, <span class="str">"Delhi"</span>, <span class="ref">B2:B100</span>, <span class="str">">"</span>&<span class="num">5000</span>)
+
+<span class="cm">-- Blank cells count</span>
+=<span class="fn">COUNTBLANK</span>(<span class="ref">A2:A100</span>)</pre>
+      </div>
+      <div class="use-box"><strong>✅ Kab Use Karo</strong>Total orders, unique entries check, missing data count, condition-wise count.</div>
+    </div>
+
+    <div class="f-card">
+      <div class="f-name">AVERAGE / AVERAGEIF / MIN / MAX / MEDIAN</div>
+      <div class="f-desc">Statistical analysis ke liye</div>
+      <div class="code-block">
+        <div class="code-hdr"><div class="dots"><div class="dot dr"></div><div class="dot dy"></div><div class="dot dg"></div></div><span class="code-lang">EXCEL</span></div>
+        <pre><span class="cm">-- Average</span>
+=<span class="fn">AVERAGE</span>(<span class="ref">B2:B100</span>)
+
+<span class="cm">-- Sirf Delhi ka average</span>
+=<span class="fn">AVERAGEIF</span>(<span class="ref">A2:A100</span>, <span class="str">"Delhi"</span>, <span class="ref">B2:B100</span>)
+
+<span class="cm">-- Sabse badi aur chhoti value</span>
+=<span class="fn">MAX</span>(<span class="ref">B2:B100</span>)
+=<span class="fn">MIN</span>(<span class="ref">B2:B100</span>)
+
+<span class="cm">-- Middle value (outliers se better)</span>
+=<span class="fn">MEDIAN</span>(<span class="ref">B2:B100</span>)
+
+<span class="cm">-- 2nd highest value</span>
+=<span class="fn">LARGE</span>(<span class="ref">B2:B100</span>, <span class="num">2</span>)
+
+<span class="cm">-- 2nd lowest value</span>
+=<span class="fn">SMALL</span>(<span class="ref">B2:B100</span>, <span class="num">2</span>)</pre>
+      </div>
+      <div class="use-box"><strong>✅ Kab Use Karo</strong>Average order value, highest/lowest sale, outliers check karna. MEDIAN better hai jab data mein bahut bade ya chhote values ho.</div>
+    </div>
+
+    <div class="f-card">
+      <div class="f-name">ROUND / INT / MOD</div>
+      <div class="f-desc">Numbers ko format karna</div>
+      <div class="code-block">
+        <div class="code-hdr"><div class="dots"><div class="dot dr"></div><div class="dot dy"></div><div class="dot dg"></div></div><span class="code-lang">EXCEL</span></div>
+        <pre><span class="cm">-- 2 decimal places tak round</span>
+=<span class="fn">ROUND</span>(<span class="ref">A1</span>, <span class="num">2</span>)
+
+<span class="cm">-- Nearest integer tak floor</span>
+=<span class="fn">INT</span>(<span class="ref">A1</span>)
+
+<span class="cm">-- Remainder nikalna</span>
+=<span class="fn">MOD</span>(<span class="ref">A1</span>, <span class="num">2</span>)  <span class="cm">-- 0 = even, 1 = odd</span>
+
+<span class="cm">-- Percentage round karna</span>
+=<span class="fn">ROUND</span>(<span class="ref">A1</span>/<span class="ref">B1</span>*<span class="num">100</span>, <span class="num">1</span>) & <span class="str">"%"</span></pre>
+      </div>
+      <div class="use-box"><strong>✅ Kab Use Karo</strong>Price calculations, percentage display, even/odd check. Financial reports mein ROUND zaroori hai.</div>
+    </div>
+  </div>
+
+  <!-- 03 TEXT FUNCTIONS -->
+  <div class="sec" id="text">
+    <div class="sec-hdr">
+      <div class="sec-icon">✏️</div>
+      <div>
+        <h2>Text Functions</h2>
+        <div class="sec-sub">Messy text data ko clean karna — real job mein roz kaam aata hai</div>
+      </div>
+    </div>
+
+    <div class="f-card">
+      <div class="f-name">TRIM / UPPER / LOWER / PROPER</div>
+      <div class="f-desc">Text clean karna — case aur spaces</div>
+      <div class="code-block">
+        <div class="code-hdr"><div class="dots"><div class="dot dr"></div><div class="dot dy"></div><div class="dot dg"></div></div><span class="code-lang">EXCEL</span></div>
+        <pre><span class="cm">-- Extra spaces hatao (beginning, end, middle)</span>
+=<span class="fn">TRIM</span>(<span class="ref">A1</span>)
+
+<span class="cm">-- UPPERCASE banana</span>
+=<span class="fn">UPPER</span>(<span class="ref">A1</span>)
+
+<span class="cm">-- lowercase banana</span>
+=<span class="fn">LOWER</span>(<span class="ref">A1</span>)
+
+<span class="cm">-- First Letter Capital (Proper Case)</span>
+=<span class="fn">PROPER</span>(<span class="ref">A1</span>)
+
+<span class="cm">-- Clean + Trim ek saath (hidden characters bhi hatata hai)</span>
+=<span class="fn">TRIM</span>(<span class="fn">CLEAN</span>(<span class="ref">A1</span>))</pre>
+      </div>
+      <div class="use-box"><strong>✅ Kab Use Karo</strong>Import kiye data mein hamesha TRIM lagao. "delhi" aur "Delhi" alag count hote hain — PROPER se fix karo.</div>
+    </div>
+
+    <div class="f-card">
+      <div class="f-name">LEFT / RIGHT / MID / LEN</div>
+      <div class="f-desc">Text ke parts nikalna</div>
+      <div class="code-block">
+        <div class="code-hdr"><div class="dots"><div class="dot dr"></div><div class="dot dy"></div><div class="dot dg"></div></div><span class="code-lang">EXCEL</span></div>
+        <pre><span class="cm">-- Pehle 3 characters</span>
+=<span class="fn">LEFT</span>(<span class="ref">A1</span>, <span class="num">3</span>)
+
+<span class="cm">-- Aakhri 4 characters</span>
+=<span class="fn">RIGHT</span>(<span class="ref">A1</span>, <span class="num">4</span>)
+
+<span class="cm">-- Beech se characters (position 3 se, 5 characters)</span>
+=<span class="fn">MID</span>(<span class="ref">A1</span>, <span class="num">3</span>, <span class="num">5</span>)
+
+<span class="cm">-- Text ki length</span>
+=<span class="fn">LEN</span>(<span class="ref">A1</span>)
+
+<span class="cm">-- Phone number se last 10 digits</span>
+=<span class="fn">RIGHT</span>(<span class="ref">A1</span>, <span class="num">10</span>)
+
+<span class="cm">-- Email se domain nikalna</span>
+=<span class="fn">MID</span>(<span class="ref">A1</span>, <span class="fn">FIND</span>(<span class="str">"@"</span>,<span class="ref">A1</span>)+<span class="num">1</span>, <span class="fn">LEN</span>(<span class="ref">A1</span>))</pre>
+      </div>
+      <div class="use-box"><strong>✅ Kab Use Karo</strong>Product codes se category nikalna, phone numbers standardize karna, email domain extract karna.</div>
+    </div>
+
+    <div class="f-card">
+      <div class="f-name">CONCATENATE / TEXTJOIN / &</div>
+      <div class="f-desc">Text jodna</div>
+      <div class="code-block">
+        <div class="code-hdr"><div class="dots"><div class="dot dr"></div><div class="dot dy"></div><div class="dot dg"></div></div><span class="code-lang">EXCEL</span></div>
+        <pre><span class="cm">-- & se jodna (sabse simple)</span>
+=<span class="ref">A1</span> & <span class="str">" "</span> & <span class="ref">B1</span>
+
+<span class="cm">-- Full name banana</span>
+=<span class="ref">A1</span> & <span class="str">" "</span> & <span class="ref">B1</span>
+
+<span class="cm">-- Address banana</span>
+=<span class="ref">A1</span> & <span class="str">", "</span> & <span class="ref">B1</span> & <span class="str">", "</span> & <span class="ref">C1</span>
+
+<span class="cm">-- TEXTJOIN — separator ke saath (blank ignore karta hai)</span>
+=<span class="fn">TEXTJOIN</span>(<span class="str">", "</span>, <span class="fn">TRUE</span>, <span class="ref">A1:D1</span>)</pre>
+      </div>
+      <div class="use-box"><strong>✅ Kab Use Karo</strong>First + Last name merge karna, address banana, unique key banana (City+Product).</div>
+    </div>
+
+    <div class="f-card">
+      <div class="f-name">FIND / SEARCH / SUBSTITUTE / REPLACE</div>
+      <div class="f-desc">Text mein dhundhna aur badalna</div>
+      <div class="code-block">
+        <div class="code-hdr"><div class="dots"><div class="dot dr"></div><div class="dot dy"></div><div class="dot dg"></div></div><span class="code-lang">EXCEL</span></div>
+        <pre><span class="cm">-- "@" kahan hai (case-sensitive)</span>
+=<span class="fn">FIND</span>(<span class="str">"@"</span>, <span class="ref">A1</span>)
+
+<span class="cm">-- Case-insensitive dhundhna</span>
+=<span class="fn">SEARCH</span>(<span class="str">"delhi"</span>, <span class="ref">A1</span>)
+
+<span class="cm">-- "Pvt Ltd" ko "Private Limited" se replace</span>
+=<span class="fn">SUBSTITUTE</span>(<span class="ref">A1</span>, <span class="str">"Pvt Ltd"</span>, <span class="str">"Private Limited"</span>)
+
+<span class="cm">-- Spaces hatana (sab)</span>
+=<span class="fn">SUBSTITUTE</span>(<span class="ref">A1</span>, <span class="str">" "</span>, <span class="str">""</span>)</pre>
+      </div>
+      <div class="use-box"><strong>✅ Kab Use Karo</strong>Data standardize karna — "Pvt." ko "Private" banana, special characters hatana, text mein kuch dhundhna.</div>
+    </div>
+  </div>
+
+  <!-- 04 LOGICAL -->
+  <div class="sec" id="logical">
+    <div class="sec-hdr">
+      <div class="sec-icon">🔀</div>
+      <div>
+        <h2>Logical Functions</h2>
+        <div class="sec-sub">Conditions ke hisaab se decision lena</div>
+      </div>
+    </div>
+
+    <div class="f-card">
+      <div class="f-name">IF / IFS / NESTED IF</div>
+      <div class="f-desc">Sabse zaroori function — condition check karna</div>
+      <div class="code-block">
+        <div class="code-hdr"><div class="dots"><div class="dot dr"></div><div class="dot dy"></div><div class="dot dg"></div></div><span class="code-lang">EXCEL</span></div>
+        <pre><span class="cm">-- Basic IF</span>
+=<span class="fn">IF</span>(<span class="ref">B1</span>><span class="num">50000</span>, <span class="str">"High"</span>, <span class="str">"Low"</span>)
+
+<span class="cm">-- Nested IF (3 conditions)</span>
+=<span class="fn">IF</span>(<span class="ref">B1</span>>=<span class="num">100000</span>, <span class="str">"A"</span>, <span class="fn">IF</span>(<span class="ref">B1</span>>=<span class="num">50000</span>, <span class="str">"B"</span>, <span class="str">"C"</span>))
+
+<span class="cm">-- IFS — zyada conditions ke liye better</span>
+=<span class="fn">IFS</span>(
+  <span class="ref">B1</span>>=<span class="num">100000</span>, <span class="str">"🟢 Excellent"</span>,
+  <span class="ref">B1</span>>=<span class="num">50000</span>,  <span class="str">"🟡 Good"</span>,
+  <span class="ref">B1</span>>=<span class="num">20000</span>,  <span class="str">"🟠 Average"</span>,
+  <span class="fn">TRUE</span>,       <span class="str">"🔴 Low"</span>
+)
+
+<span class="cm">-- IF with ISBLANK</span>
+=<span class="fn">IF</span>(<span class="fn">ISBLANK</span>(<span class="ref">A1</span>), <span class="str">"Missing"</span>, <span class="ref">A1</span>)</pre>
+      </div>
+      <div class="use-box"><strong>✅ Kab Use Karo</strong>Performance category, pass/fail, high/low label, missing data flag. IFS use karo jab 3+ conditions ho — nested IF unreadable ho jaata hai.</div>
+    </div>
+
+    <div class="f-card">
+      <div class="f-name">AND / OR / NOT / IFERROR</div>
+      <div class="f-desc">Multiple conditions aur error handling</div>
+      <div class="code-block">
+        <div class="code-hdr"><div class="dots"><div class="dot dr"></div><div class="dot dy"></div><div class="dot dg"></div></div><span class="code-lang">EXCEL</span></div>
+        <pre><span class="cm">-- Dono conditions true honi chahiye</span>
+=<span class="fn">IF</span>(<span class="fn">AND</span>(<span class="ref">A1</span>=<span class="str">"Delhi"</span>, <span class="ref">B1</span>><span class="num">50000</span>), <span class="str">"Yes"</span>, <span class="str">"No"</span>)
+
+<span class="cm">-- Koi bhi ek condition true ho</span>
+=<span class="fn">IF</span>(<span class="fn">OR</span>(<span class="ref">A1</span>=<span class="str">"Delhi"</span>, <span class="ref">A1</span>=<span class="str">"Mumbai"</span>), <span class="str">"Metro"</span>, <span class="str">"Other"</span>)
+
+<span class="cm">-- Error aaye toh 0 dikhao (VLOOKUP error common hai)</span>
+=<span class="fn">IFERROR</span>(<span class="fn">VLOOKUP</span>(<span class="ref">A1</span>, <span class="ref">Sheet2!A:B</span>, <span class="num">2</span>, <span class="num">0</span>), <span class="str">"Not Found"</span>)
+
+<span class="cm">-- Division by zero error handle</span>
+=<span class="fn">IFERROR</span>(<span class="ref">A1</span>/<span class="ref">B1</span>, <span class="num">0</span>)</pre>
+      </div>
+      <div class="use-box"><strong>✅ Kab Use Karo</strong>IFERROR hamesha VLOOKUP ke saath lagao — warna #N/A error aata hai. AND/OR multiple conditions ke liye.</div>
+    </div>
+  </div>
+
+  <!-- 05 LOOKUP -->
+  <div class="sec" id="lookup">
+    <div class="sec-hdr">
+      <div class="sec-icon">🔍</div>
+      <div>
+        <h2>Lookup Functions — Sabse Important</h2>
+        <div class="sec-sub">Ek table se doosri table mein data dhundhna — roz kaam aata hai</div>
+      </div>
+    </div>
+
+    <div class="f-card">
+      <div class="f-name">VLOOKUP <span style="font-size:12px; color:var(--muted)">— Vertical Lookup</span></div>
+      <div class="f-desc">Column mein dhundhna — classic function, sabko aana chahiye</div>
+      <div class="code-block">
+        <div class="code-hdr"><div class="dots"><div class="dot dr"></div><div class="dot dy"></div><div class="dot dg"></div></div><span class="code-lang">EXCEL</span></div>
+        <pre><span class="cm">-- Syntax: =VLOOKUP(kya dhundho, kahan dhundho, konsa column, exact?)</span>
+=<span class="fn">VLOOKUP</span>(<span class="ref">A2</span>, <span class="ref">Sheet2!$A:$C</span>, <span class="num">2</span>, <span class="num">0</span>)
+
+<span class="cm">-- Example: Customer ID se naam dhundhna</span>
+=<span class="fn">VLOOKUP</span>(<span class="ref">A2</span>, <span class="ref">Customers!$A:$D</span>, <span class="num">2</span>, <span class="fn">FALSE</span>)
+
+<span class="cm">-- Error handle karte hue</span>
+=<span class="fn">IFERROR</span>(<span class="fn">VLOOKUP</span>(<span class="ref">A2</span>, <span class="ref">Products!$A:$C</span>, <span class="num">3</span>, <span class="num">0</span>), <span class="str">"Not Found"</span>)</pre>
+      </div>
+      <div class="warn-box">
+        <strong>⚠️ VLOOKUP ki Limitations</strong>
+        Sirf left se right dhundhta hai. Pehle column mein hi dhundhta hai. Isliye XLOOKUP better hai (naya Excel mein available hai).
+      </div>
+      <div class="use-box"><strong>✅ Kab Use Karo</strong>Order table mein customer naam aana, product ID se price nikalna, employee ID se department dhundhna.</div>
+    </div>
+
+    <div class="f-card">
+      <div class="f-name">XLOOKUP ⭐ <span style="font-size:12px; color:var(--muted)">— Modern Lookup (Excel 2021+)</span></div>
+      <div class="f-desc">VLOOKUP ka upgraded version — zyada powerful aur flexible</div>
+      <div class="code-block">
+        <div class="code-hdr"><div class="dots"><div class="dot dr"></div><div class="dot dy"></div><div class="dot dg"></div></div><span class="code-lang">EXCEL</span></div>
+        <pre><span class="cm">-- Syntax: =XLOOKUP(kya, kahan, return kya, not found)</span>
+=<span class="fn">XLOOKUP</span>(<span class="ref">A2</span>, <span class="ref">Sheet2!A:A</span>, <span class="ref">Sheet2!B:B</span>, <span class="str">"Not Found"</span>)
+
+<span class="cm">-- Left mein bhi dhundh sakta hai (VLOOKUP nahi kar sakta)</span>
+=<span class="fn">XLOOKUP</span>(<span class="ref">A2</span>, <span class="ref">Sheet2!C:C</span>, <span class="ref">Sheet2!A:A</span>, <span class="str">"Not Found"</span>)
+
+<span class="cm">-- Multiple columns return karna</span>
+=<span class="fn">XLOOKUP</span>(<span class="ref">A2</span>, <span class="ref">Products!A:A</span>, <span class="ref">Products!B:D</span>, <span class="str">"Not Found"</span>)</pre>
+      </div>
+      <div class="use-box"><strong>✅ Kab Use Karo</strong>Naya Excel hai toh XLOOKUP use karo — VLOOKUP se better hai har taraf. Error automatically handle karta hai.</div>
+    </div>
+
+    <div class="f-card">
+      <div class="f-name">INDEX + MATCH <span style="font-size:12px; color:var(--muted)">— Power Combo</span></div>
+      <div class="f-desc">VLOOKUP se zyada flexible — purane Excel mein XLOOKUP ka kaam karta hai</div>
+      <div class="code-block">
+        <div class="code-hdr"><div class="dots"><div class="dot dr"></div><div class="dot dy"></div><div class="dot dg"></div></div><span class="code-lang">EXCEL</span></div>
+        <pre><span class="cm">-- MATCH: row number dhundhta hai</span>
+=<span class="fn">MATCH</span>(<span class="ref">A2</span>, <span class="ref">Sheet2!A:A</span>, <span class="num">0</span>)
+
+<span class="cm">-- INDEX: us row ki value return karta hai</span>
+=<span class="fn">INDEX</span>(<span class="ref">Sheet2!B:B</span>, <span class="fn">MATCH</span>(<span class="ref">A2</span>, <span class="ref">Sheet2!A:A</span>, <span class="num">0</span>))
+
+<span class="cm">-- Left mein bhi kaam karta hai</span>
+=<span class="fn">INDEX</span>(<span class="ref">Sheet2!A:A</span>, <span class="fn">MATCH</span>(<span class="ref">B2</span>, <span class="ref">Sheet2!C:C</span>, <span class="num">0</span>))</pre>
+      </div>
+      <div class="use-box"><strong>✅ Kab Use Karo</strong>Purana Excel (2016 ya pehle) ho, ya kisi bhi direction mein lookup karna ho. Interviews mein poochhte hain — zaroori hai.</div>
+    </div>
+  </div>
+
+  <!-- 06 DATE FUNCTIONS -->
+  <div class="sec" id="date">
+    <div class="sec-hdr">
+      <div class="sec-icon">📅</div>
+      <div>
+        <h2>Date Functions</h2>
+        <div class="sec-sub">Date ke saath kaam — analysis mein bahut zaroori</div>
+      </div>
+    </div>
+
+    <div class="f-card">
+      <div class="f-name">TODAY / NOW / DATE / YEAR / MONTH / DAY</div>
+      <div class="f-desc">Date se parts nikalna aur banana</div>
+      <div class="code-block">
+        <div class="code-hdr"><div class="dots"><div class="dot dr"></div><div class="dot dy"></div><div class="dot dg"></div></div><span class="code-lang">EXCEL</span></div>
+        <pre><span class="cm">-- Aaj ki date</span>
+=<span class="fn">TODAY</span>()
+
+<span class="cm">-- Abhi ka time bhi</span>
+=<span class="fn">NOW</span>()
+
+<span class="cm">-- Date se year nikalna</span>
+=<span class="fn">YEAR</span>(<span class="ref">A1</span>)
+
+<span class="cm">-- Month number</span>
+=<span class="fn">MONTH</span>(<span class="ref">A1</span>)
+
+<span class="cm">-- Day number</span>
+=<span class="fn">DAY</span>(<span class="ref">A1</span>)
+
+<span class="cm">-- Kitne din purana order hai</span>
+=<span class="fn">TODAY</span>() - <span class="ref">A1</span>
+
+<span class="cm">-- Month name banana</span>
+=<span class="fn">TEXT</span>(<span class="ref">A1</span>, <span class="str">"MMMM"</span>)
+
+<span class="cm">-- Week number</span>
+=<span class="fn">WEEKNUM</span>(<span class="ref">A1</span>)</pre>
+      </div>
+      <div class="use-box"><strong>✅ Kab Use Karo</strong>Age calculate karna, monthly grouping, order kitne din purana hai — date-based analysis mein sab jagah.</div>
+    </div>
+
+    <div class="f-card">
+      <div class="f-name">DATEDIF / EDATE / EOMONTH / NETWORKDAYS</div>
+      <div class="f-desc">Date calculations — age, deadlines, business days</div>
+      <div class="code-block">
+        <div class="code-hdr"><div class="dots"><div class="dot dr"></div><div class="dot dy"></div><div class="dot dg"></div></div><span class="code-lang">EXCEL</span></div>
+        <pre><span class="cm">-- Age calculate karo (years mein)</span>
+=<span class="fn">DATEDIF</span>(<span class="ref">A1</span>, <span class="fn">TODAY</span>(), <span class="str">"Y"</span>)
+
+<span class="cm">-- 3 mahine baad ki date</span>
+=<span class="fn">EDATE</span>(<span class="ref">A1</span>, <span class="num">3</span>)
+
+<span class="cm">-- Mahine ka aakhri din</span>
+=<span class="fn">EOMONTH</span>(<span class="ref">A1</span>, <span class="num">0</span>)
+
+<span class="cm">-- Business days mein difference (weekends chhod ke)</span>
+=<span class="fn">NETWORKDAYS</span>(<span class="ref">A1</span>, <span class="ref">B1</span>)</pre>
+      </div>
+      <div class="use-box"><strong>✅ Kab Use Karo</strong>Employee age/tenure, subscription expiry, delivery deadline, working days mein turnaround time.</div>
+    </div>
+  </div>
+
+  <!-- 07 DATA CLEANING -->
+  <div class="sec" id="clean">
+    <div class="sec-hdr">
+      <div class="sec-icon">🧹</div>
+      <div>
+        <h2>Data Cleaning in Excel</h2>
+        <div class="sec-sub">Real job mein 60% time yahaan jaata hai — yeh master karo</div>
+      </div>
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <tr><th>Problem</th><th>Solution</th><th>Shortcut / Trick</th></tr>
+        <tr><td><strong>Duplicate rows</strong></td><td>Data tab → Remove Duplicates</td><td>Alt + A + M</td></tr>
+        <tr><td><strong>Extra spaces</strong></td><td>=TRIM(A1) formula</td><td>Find & Replace: " " (double) → " " (single)</td></tr>
+        <tr><td><strong>Numbers as text</strong></td><td>=VALUE(A1) ya Text to Columns</td><td>Green triangle → Convert to Number</td></tr>
+        <tr><td><strong>Blank cells fill</strong></td><td>Ctrl+G → Special → Blanks → = ↑ → Ctrl+Enter</td><td>Sabse fast trick</td></tr>
+        <tr><td><strong>Date format galat</strong></td><td>Text to Columns → Date format set karo</td><td>DATEVALUE() bhi kaam karta hai</td></tr>
+        <tr><td><strong>Case inconsistent</strong></td><td>=PROPER(A1) / UPPER / LOWER</td><td>Flash Fill (Ctrl+E) bhi try karo</td></tr>
+        <tr><td><strong>Special characters</strong></td><td>=SUBSTITUTE(A1, char, "")</td><td>Find & Replace: Ctrl+H</td></tr>
+        <tr><td><strong>Leading zeros missing</strong></td><td>Cell format: Custom → 00000</td><td>Pincode ke liye zaroori</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-title">⚡ Flash Fill — Jaadu Ka Tool</div>
+      <p>Pattern dikhao — Excel khud complete kar deta hai. Ctrl+E dabao.</p>
+      <div class="code-block">
+        <div class="code-hdr"><div class="dots"><div class="dot dr"></div><div class="dot dy"></div><div class="dot dg"></div></div><span class="code-lang">EXAMPLE</span></div>
+        <pre><span class="cm">Column A          Column B (aap type karo)</span>
+Rahul Sharma  →   Rahul        <span class="cm">← yeh type karo</span>
+Priya Singh   →   Priya        <span class="cm">← Ctrl+E dabao — Excel baki bhar dega!</span>
+Amit Kumar    →   Amit         <span class="cm">← automatic!</span>
+
+<span class="cm">Kaam karta hai: names split, email username, phone format, etc.</span></pre>
+      </div>
+      <div class="tip">Flash Fill (Ctrl+E) ek pattern dekh ke baki sab automatically fill kar deta hai. Formula likhe bina!</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🔍 Conditional Formatting — Data visually check karna</div>
+      <p style="font-size:14px; color:var(--muted);">Home → Conditional Formatting se:</p>
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>Use</th><th>Kaise</th></tr>
+          <tr><td>Duplicates highlight karo</td><td>Highlight Cell Rules → Duplicate Values</td></tr>
+          <tr><td>Top 10 values green karo</td><td>Top/Bottom Rules → Top 10 Items</td></tr>
+          <tr><td>Data bars dikhao</td><td>Data Bars — bar chart jaisa cells mein</td></tr>
+          <tr><td>Color scale</td><td>Color Scales — low=red, high=green</td></tr>
+          <tr><td>Custom rule</td><td>New Rule → Formula: =A1>50000</td></tr>
+        </table>
+      </div>
+      <div class="use-box"><strong>✅ Kab Use Karo</strong>Data review karte waqt — outliers, duplicates, missing values jaldi dikhe. Dashboard mein bhi achha lagta hai.</div>
+    </div>
+  </div>
+
+  <!-- 08 PIVOT TABLES -->
+  <div class="sec" id="pivot">
+    <div class="sec-hdr">
+      <div class="sec-icon">🔄</div>
+      <div>
+        <h2>Pivot Tables — Excel Ka Sabse Powerful Feature</h2>
+        <div class="sec-sub">Bina formula ke data summarize karo — seconds mein</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Pivot Table Kaise Banate Hain</div>
+      <div class="steps">
+        <div class="step">
+          <div class="snum">1</div>
+          <div class="sbody"><h4>Data select karo</h4><p>Puri table select karo — ya kisi bhi cell mein click karo data mein</p></div>
+        </div>
+        <div class="step">
+          <div class="snum">2</div>
+          <div class="sbody"><h4>Insert → PivotTable</h4><p>New worksheet pe banao — alag rahega</p></div>
+        </div>
+        <div class="step">
+          <div class="snum">3</div>
+          <div class="sbody"><h4>Fields arrange karo</h4><p>Rows mein Category, Values mein Amount, Columns mein Month — drag & drop</p></div>
+        </div>
+        <div class="step">
+          <div class="snum">4</div>
+          <div class="sbody"><h4>Value Field Settings</h4><p>Amount pe right click → Value Field Settings → SUM / COUNT / AVERAGE choose karo</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Pivot Table — Kab Kya Karo</div>
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>Sawaal</th><th>Rows</th><th>Columns</th><th>Values</th></tr>
+          <tr><td>City-wise total sales?</td><td>City</td><td>—</td><td>SUM of Amount</td></tr>
+          <tr><td>Month-wise product sales?</td><td>Product</td><td>Month</td><td>SUM of Sales</td></tr>
+          <tr><td>Har employee ke orders?</td><td>Employee</td><td>—</td><td>COUNT of Order ID</td></tr>
+          <tr><td>Category % share?</td><td>Category</td><td>—</td><td>SUM → % of Grand Total</td></tr>
+          <tr><td>Top 5 products?</td><td>Product</td><td>—</td><td>SUM → Sort → Top 5 filter</td></tr>
+        </table>
+      </div>
+      <div class="tip">Pivot Table mein kisi bhi number pe right click → Show Values As → % of Grand Total. Percentage automatically calculate hogi!</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Slicer — Pivot ko Interactive Banana</div>
+      <p>PivotTable click karo → Insert → Slicer → Field choose karo. Ab buttons se filter kar sakte ho — bilkul Power BI jaisa!</p>
+      <div class="use-box"><strong>✅ Kab Use Karo</strong>Manager ko dikhana ho — Slicer se wo khud City, Month, Category filter kar sakta hai. Professional lagta hai.</div>
+    </div>
+  </div>
+
+  <!-- 09 CHARTS -->
+  <div class="sec" id="charts">
+    <div class="sec-hdr">
+      <div class="sec-icon">📈</div>
+      <div>
+        <h2>Excel Charts — Kab Kaun Sa Use Karo</h2>
+        <div class="sec-sub">Power BI jaisa hi logic — sahi chart sahi story batata hai</div>
+      </div>
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <tr><th>Chart</th><th>Kab Use Karo</th><th>Example</th><th>Avoid Karo Jab</th></tr>
+        <tr><td><strong>📊 Bar / Column</strong> <span class="badge b-green">Most Used</span></td><td>Categories compare karna</td><td>City-wise sales, Product comparison</td><td>Time trend ke liye nahi</td></tr>
+        <tr><td><strong>📈 Line Chart</strong></td><td>Time ke saath trend</td><td>Monthly revenue, Weekly growth</td><td>Categories compare karne ke liye nahi</td></tr>
+        <tr><td><strong>🥧 Pie / Doughnut</strong></td><td>% share dikhana, 5 se kam categories</td><td>Region % share, Budget split</td><td>5+ categories mein nahi</td></tr>
+        <tr><td><strong>🔵 Scatter</strong></td><td>Do variables ka relation</td><td>Price vs Sales, Spend vs Revenue</td><td>Single variable ke liye nahi</td></tr>
+        <tr><td><strong>📊 Combo Chart</strong></td><td>Bar + Line ek saath</td><td>Revenue (bar) + Growth % (line)</td><td>Similar units wale data ke liye</td></tr>
+        <tr><td><strong>🌊 Waterfall</strong></td><td>Additions aur subtractions dikhana</td><td>Profit/Loss breakdown, Budget variance</td><td>Simple comparison ke liye nahi</td></tr>
+        <tr><td><strong>📦 Box Plot</strong></td><td>Data distribution</td><td>Salary range, Score distribution</td><td>Beginners ke liye complex</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Chart Banate Waqt Kya Dhyan Rakho</div>
+      <div class="two-col">
+        <div>
+          <p style="font-size:13px; color:var(--accent); font-weight:600; margin-bottom:8px">✅ Karo</p>
+          <p style="font-size:13px; color:var(--muted); line-height:2">
+            • Title dena hamesha<br>
+            • Axis labels clear rakhna<br>
+            • Data labels add karo<br>
+            • 2-3 colors max<br>
+            • Gridlines kam karo
+          </p>
+        </div>
+        <div>
+          <p style="font-size:13px; color:var(--red); font-weight:600; margin-bottom:8px">❌ Mat Karo</p>
+          <p style="font-size:13px; color:var(--muted); line-height:2">
+            • 3D charts — misleading<br>
+            • Too many colors<br>
+            • Bina title ke<br>
+            • Cluttered legends<br>
+            • Y-axis se 0 nahi shuru karna
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 10 SHORTCUTS -->
+  <div class="sec" id="shortcuts">
+    <div class="sec-hdr">
+      <div class="sec-icon">⚡</div>
+      <div>
+        <h2>Excel Shortcuts — Speed Badhao</h2>
+        <div class="sec-sub">Yeh shortcuts roz use karo — hath apne aap seekh jayenge</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🗂️ Navigation</div>
+      <div class="shortcuts">
+        <div class="sc"><span class="sc-key">Ctrl + End</span><span class="sc-desc">Data ki last cell pe jao</span></div>
+        <div class="sc"><span class="sc-key">Ctrl + Home</span><span class="sc-desc">A1 pe jao</span></div>
+        <div class="sc"><span class="sc-key">Ctrl + →</span><span class="sc-desc">Data ke aakhir tak jao</span></div>
+        <div class="sc"><span class="sc-key">Ctrl + Shift + →</span><span class="sc-desc">Data end tak select karo</span></div>
+        <div class="sc"><span class="sc-key">Ctrl + G</span><span class="sc-desc">Go To — special cells</span></div>
+        <div class="sc"><span class="sc-key">F5</span><span class="sc-desc">Go To dialog box</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">✏️ Editing</div>
+      <div class="shortcuts">
+        <div class="sc"><span class="sc-key">Ctrl + Z</span><span class="sc-desc">Undo</span></div>
+        <div class="sc"><span class="sc-key">Ctrl + Y</span><span class="sc-desc">Redo</span></div>
+        <div class="sc"><span class="sc-key">Ctrl + D</span><span class="sc-desc">Upar wali cell copy karo</span></div>
+        <div class="sc"><span class="sc-key">Ctrl + R</span><span class="sc-desc">Left wali cell copy karo</span></div>
+        <div class="sc"><span class="sc-key">Ctrl + E</span><span class="sc-desc">Flash Fill — pattern se fill</span></div>
+        <div class="sc"><span class="sc-key">Ctrl + H</span><span class="sc-desc">Find & Replace</span></div>
+        <div class="sc"><span class="sc-key">F4</span><span class="sc-desc">Reference type toggle ($A$1)</span></div>
+        <div class="sc"><span class="sc-key">Ctrl + ;</span><span class="sc-desc">Aaj ki date insert karo</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📊 Data & Formatting</div>
+      <div class="shortcuts">
+        <div class="sc"><span class="sc-key">Ctrl + T</span><span class="sc-desc">Table banana (zaroori!)</span></div>
+        <div class="sc"><span class="sc-key">Alt + =</span><span class="sc-desc">AutoSum — instant SUM</span></div>
+        <div class="sc"><span class="sc-key">Ctrl + 1</span><span class="sc-desc">Format Cells dialog</span></div>
+        <div class="sc"><span class="sc-key">Ctrl + Shift + L</span><span class="sc-desc">Filter on/off</span></div>
+        <div class="sc"><span class="sc-key">Ctrl + Shift + $</span><span class="sc-desc">Currency format</span></div>
+        <div class="sc"><span class="sc-key">Ctrl + Shift + %</span><span class="sc-desc">Percentage format</span></div>
+        <div class="sc"><span class="sc-key">Alt + H + O + I</span><span class="sc-desc">Column width autofit</span></div>
+        <div class="sc"><span class="sc-key">Ctrl + Shift + +</span><span class="sc-desc">Row/Column insert</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🏆 Power User Tricks</div>
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>Trick</th><th>Kaise</th><th>Kab Useful</th></tr>
+          <tr><td><strong>Excel Table (Ctrl+T)</strong></td><td>Data select → Ctrl+T</td><td>Formulas auto-extend hote hain, named range milta hai</td></tr>
+          <tr><td><strong>Name Manager</strong></td><td>Formulas → Name Manager</td><td>Ranges ko naam do — formula readable hoti hai</td></tr>
+          <tr><td><strong>Data Validation</strong></td><td>Data → Data Validation</td><td>Dropdown list banana, wrong entry rokna</td></tr>
+          <tr><td><strong>Freeze Panes</strong></td><td>View → Freeze Panes</td><td>Header row scroll karte waqt bhi dikhti rahe</td></tr>
+          <tr><td><strong>Text to Columns</strong></td><td>Data → Text to Columns</td><td>CSV data split karna, date format fix karna</td></tr>
+          <tr><td><strong>Paste Special</strong></td><td>Ctrl+Alt+V</td><td>Sirf values paste karo, format paste karo, transpose karo</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <strong>Excel + SQL + Power BI</strong> — ab tumhare paas teeno ke notes hain.<br>
+  Ek project banao jisme teeno use ho — . 
+</div>
+
+</body>
+</html>
