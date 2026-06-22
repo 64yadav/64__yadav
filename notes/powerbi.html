@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Power BI Notes — Data Analytics ke liye</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Inter:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --bg: #0a0e1a;
+    --surface: #111827;
+    --card: #151d2e;
+    --border: #1e2d45;
+    --accent: #f2c94c;
+    --accent2: #e07b39;
+    --blue: #4f8ef7;
+    --green: #34d399;
+    --purple: #a78bfa;
+    --red: #f87171;
+    --teal: #2dd4bf;
+    --text: #e2e8f0;
+    --muted: #7a8ba0;
+    --code-bg: #080d14;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.7;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(160deg, #0a0e1a 0%, #0f1e35 60%, #0a0e1a 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 56px 24px 48px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -80px; left: 50%; transform: translateX(-50%);
+    width: 600px; height: 300px;
+    background: radial-gradient(ellipse, rgba(242,201,76,0.10) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-tag {
+    display: inline-block;
+    background: rgba(242,201,76,0.10);
+    color: var(--accent);
+    border: 1px solid rgba(242,201,76,0.28);
+    border-radius: 20px;
+    padding: 4px 16px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+  }
+  .hero h1 {
+    font-size: clamp(30px, 6vw, 52px);
+    font-weight: 700;
+    line-height: 1.15;
+    margin-bottom: 14px;
+    letter-spacing: -0.5px;
+  }
+  .hero h1 span { color: var(--accent); }
+  .hero p { color: var(--muted); font-size: 15px; max-width: 520px; margin: 0 auto 28px; }
+  .hero-pills { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+  .pill {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  /* ── LAYOUT ── */
+  .container { max-width: 920px; margin: 0 auto; padding: 36px 20px 72px; }
+
+  /* ── TOC ── */
+  .toc {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 26px;
+    margin-bottom: 44px;
+  }
+  .toc-label { color: var(--accent); font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 16px; }
+  .toc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 6px; }
+  .toc-item {
+    color: var(--muted);
+    font-size: 13px;
+    padding: 7px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.15s, color 0.15s;
+  }
+  .toc-item:hover { background: var(--border); color: var(--text); }
+  .toc-item .tnum { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--accent); min-width: 22px; }
+
+  /* ── SECTION ── */
+  .sec { margin-bottom: 52px; }
+  .sec-hdr {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 24px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .sec-icon {
+    font-size: 22px;
+    width: 44px; height: 44px;
+    background: rgba(242,201,76,0.08);
+    border: 1px solid rgba(242,201,76,0.2);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .sec-hdr h2 { font-size: 21px; font-weight: 700; margin-bottom: 3px; }
+  .sec-sub { color: var(--muted); font-size: 13px; }
+
+  /* ── CARD ── */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 22px 24px;
+    margin-bottom: 16px;
+  }
+  .card-title {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .card p { color: var(--muted); font-size: 14px; margin-bottom: 12px; }
+  .card p:last-child { margin-bottom: 0; }
+
+  /* ── BADGES ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.4px;
+  }
+  .b-yellow { background: rgba(242,201,76,0.12); color: var(--accent); border: 1px solid rgba(242,201,76,0.28); }
+  .b-green  { background: rgba(52,211,153,0.10); color: var(--green);  border: 1px solid rgba(52,211,153,0.22); }
+  .b-blue   { background: rgba(79,142,247,0.10); color: var(--blue);   border: 1px solid rgba(79,142,247,0.22); }
+  .b-purple { background: rgba(167,139,250,0.10); color: var(--purple); border: 1px solid rgba(167,139,250,0.22); }
+  .b-red    { background: rgba(248,113,113,0.10); color: var(--red);   border: 1px solid rgba(248,113,113,0.22); }
+  .b-teal   { background: rgba(45,212,191,0.10); color: var(--teal);   border: 1px solid rgba(45,212,191,0.22); }
+  .b-orange { background: rgba(224,123,57,0.12); color: var(--accent2);border: 1px solid rgba(224,123,57,0.28); }
+
+  /* ── CODE ── */
+  .code-block {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 14px 0;
+  }
+  .code-hdr {
+    background: #0d1420;
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+  }
+  .code-lang { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--accent); letter-spacing: 1.5px; text-transform: uppercase; }
+  .dots { display: flex; gap: 5px; }
+  .dot { width: 9px; height: 9px; border-radius: 50%; }
+  .dr { background: #ff5f57; } .dy { background: #ffbd2e; } .dg { background: #28ca41; }
+  pre {
+    padding: 16px 18px;
+    overflow-x: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    line-height: 1.85;
+  }
+  .kw  { color: #ff7b72; }
+  .fn  { color: #79c0ff; }
+  .str { color: #a5d6ff; }
+  .num { color: #f8c555; }
+  .cm  { color: #484f58; font-style: italic; }
+  .op  { color: #ff7b72; }
+  .tbl { color: #ffa657; }
+  .col { color: #e2e8f0; }
+  .acc { color: var(--accent); }
+
+  /* ── BOXES ── */
+  .use-box {
+    background: rgba(52,211,153,0.05);
+    border: 1px solid rgba(52,211,153,0.18);
+    border-left: 3px solid var(--green);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px;
+    margin: 12px 0;
+    font-size: 14px;
+    color: var(--text);
+  }
+  .use-box strong { color: var(--green); display: block; margin-bottom: 4px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.8px; }
+
+  .warn-box {
+    background: rgba(248,113,113,0.05);
+    border: 1px solid rgba(248,113,113,0.18);
+    border-left: 3px solid var(--red);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px;
+    margin: 12px 0;
+    font-size: 14px;
+    color: var(--text);
+  }
+  .warn-box strong { color: var(--red); display: block; margin-bottom: 4px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.8px; }
+
+  .tip {
+    background: rgba(167,139,250,0.05);
+    border: 1px solid rgba(167,139,250,0.18);
+    border-radius: 8px;
+    padding: 13px 17px;
+    margin: 13px 0;
+    font-size: 14px;
+    color: #c4b5fd;
+  }
+  .tip::before { content: '💡 Pro Tip: '; font-weight: 700; }
+
+  .info-box {
+    background: rgba(79,142,247,0.05);
+    border: 1px solid rgba(79,142,247,0.18);
+    border-left: 3px solid var(--blue);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px;
+    margin: 12px 0;
+    font-size: 14px;
+    color: var(--text);
+  }
+  .info-box strong { color: var(--blue); display: block; margin-bottom: 4px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.8px; }
+
+  /* ── TABLE ── */
+  .tbl-wrap { overflow-x: auto; margin: 14px 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  th {
+    background: #0d1420;
+    color: var(--accent);
+    padding: 10px 14px;
+    text-align: left;
+    font-size: 11px;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    border: 1px solid var(--border);
+    font-weight: 600;
+  }
+  td { padding: 10px 14px; border: 1px solid var(--border); color: var(--muted); vertical-align: top; }
+  tr:nth-child(even) td { background: rgba(255,255,255,0.015); }
+  td code {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--accent);
+    font-size: 12px;
+    background: rgba(242,201,76,0.08);
+    padding: 2px 7px;
+    border-radius: 4px;
+  }
+  td strong { color: var(--text); }
+
+  /* ── GRID ── */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .three-col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  @media (max-width: 640px) {
+    .two-col { grid-template-columns: 1fr; }
+    .three-col { grid-template-columns: 1fr; }
+  }
+
+  /* ── CHART CARD ── */
+  .chart-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin-bottom: 14px;
+  }
+  .chart-name {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .chart-when { font-size: 13px; color: var(--muted); margin-bottom: 8px; }
+  .chart-ex { font-size: 12px; color: var(--green); font-style: italic; }
+  .chart-avoid { font-size: 12px; color: var(--red); margin-top: 6px; }
+
+  /* ── DAX card ── */
+  .dax-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-top: 2px solid var(--accent);
+    border-radius: 0 0 12px 12px;
+    padding: 20px 22px;
+    margin-bottom: 20px;
+  }
+  .dax-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 16px;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .dax-desc { font-size: 13px; color: var(--muted); margin-bottom: 12px; }
+
+  /* ── STEPS ── */
+  .steps { display: flex; flex-direction: column; gap: 14px; }
+  .step { display: flex; gap: 14px; align-items: flex-start; }
+  .snum {
+    width: 28px; height: 28px; min-width: 28px;
+    background: var(--accent);
+    color: #0a0e1a;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700;
+    margin-top: 2px;
+  }
+  .sbody h4 { font-size: 14px; font-weight: 600; margin-bottom: 3px; }
+  .sbody p { font-size: 13px; color: var(--muted); }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  /* ── FOOTER ── */
+  .footer {
+    text-align: center;
+    padding: 36px 24px;
+    color: var(--muted);
+    font-size: 13px;
+    border-top: 1px solid var(--border);
+  }
+  .footer strong { color: var(--accent); }
+
+  /* ── DIVIDER ── */
+  .divider { height: 1px; background: var(--border); margin: 20px 0; }
+
+  /* phase strip */
+  .phase {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(242,201,76,0.05);
+    border: 1px solid rgba(242,201,76,0.15);
+    border-radius: 8px;
+    padding: 10px 16px;
+    margin-bottom: 12px;
+    font-size: 13px;
+  }
+  .phase-icon { font-size: 18px; }
+  .phase-label { color: var(--accent); font-weight: 600; margin-right: 6px; }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-tag">Data Analytics</div>
+  <h1>Power BI <span>Complete Notes</span></h1>
+  <p>Data lena → Clean karna → DAX likhna → Sahi chart banana — sab ek jagah</p>
+  <div class="hero-pills">
+    <span class="pill">📥 Data Sources</span>
+    <span class="pill">🧹 Data Cleaning</span>
+    <span class="pill">🔗 Relationships</span>
+    <span class="pill">📐 DAX Formulas</span>
+    <span class="pill">📊 Visualizations</span>
+    <span class="pill">🎯 Best Practices</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- TOC -->
+  <div class="toc">
+    <div class="toc-label">📋 Topics</div>
+    <div class="toc-grid">
+      <a href="#workflow" class="toc-item"><span class="tnum">01</span> Power BI Workflow</a>
+      <a href="#data" class="toc-item"><span class="tnum">02</span> Data Lena (Get Data)</a>
+      <a href="#clean" class="toc-item"><span class="tnum">03</span> Data Clean Karna</a>
+      <a href="#relations" class="toc-item"><span class="tnum">04</span> Relationships</a>
+      <a href="#dax" class="toc-item"><span class="tnum">05</span> DAX Formulas</a>
+      <a href="#measures" class="toc-item"><span class="tnum">06</span> Measures vs Columns</a>
+      <a href="#charts" class="toc-item"><span class="tnum">07</span> Charts & Visuals</a>
+      <a href="#filters" class="toc-item"><span class="tnum">08</span> Filters & Slicers</a>
+      <a href="#tips" class="toc-item"><span class="tnum">09</span> Dashboard Tips</a>
+      <a href="#practice" class="toc-item"><span class="tnum">10</span> Practice Plan</a>
+    </div>
+  </div>
+
+  <!-- 01 WORKFLOW -->
+  <div class="sec" id="workflow">
+    <div class="sec-hdr">
+      <div class="sec-icon">🔄</div>
+      <div>
+        <h2>Power BI Workflow — Shuruaat se Dashboard tak</h2>
+        <div class="sec-sub">Yeh 5 steps hamesha same rahenge, chahe koi bhi project ho</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="steps">
+        <div class="step">
+          <div class="snum">1</div>
+          <div class="sbody">
+            <h4>📥 Data Lao (Get Data)</h4>
+            <p>Excel, CSV, SQL, Web — kahan se bhi data import karo</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="snum">2</div>
+          <div class="sbody">
+            <h4>🧹 Power Query mein Clean Karo</h4>
+            <p>Galat data theek karo, columns rename karo, format sahi karo</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="snum">3</div>
+          <div class="sbody">
+            <h4>🔗 Relationships Banao (Model View)</h4>
+            <p>Tables ko aapas mein connect karo — Excel ke VLOOKUP jaisa</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="snum">4</div>
+          <div class="sbody">
+            <h4>📐 DAX se Calculations Karo</h4>
+            <p>Measures aur Calculated Columns banao</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="snum">5</div>
+          <div class="sbody">
+            <h4>📊 Dashboard Banao (Report View)</h4>
+            <p>Sahi charts choose karo, layout set karo, publish karo</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 02 DATA LENA -->
+  <div class="sec" id="data">
+    <div class="sec-hdr">
+      <div class="sec-icon">📥</div>
+      <div>
+        <h2>Data Lena — Get Data</h2>
+        <div class="sec-sub">Kahan se kab data import karna chahiye</div>
+      </div>
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <tr><th>Source</th><th>Kab Use Karo</th><th>Kaise</th></tr>
+        <tr><td><strong>Excel / CSV</strong></td><td>Sabse common — files already available hain</td><td>Home → Get Data → Excel/Text CSV</td></tr>
+        <tr><td><strong>SQL Server / MySQL</strong></td><td>Company ka live database connect karna ho</td><td>Get Data → SQL Server → query likhkar</td></tr>
+        <tr><td><strong>SharePoint / OneDrive</strong></td><td>Team ke saath shared files</td><td>Get Data → SharePoint Folder</td></tr>
+        <tr><td><strong>Web URL</strong></td><td>Online table ya public data</td><td>Get Data → Web → URL paste karo</td></tr>
+        <tr><td><strong>Google Sheets</strong></td><td>Google Workspace use karte ho</td><td>Get Data → Web → Sheets link</td></tr>
+        <tr><td><strong>Blank Query</strong></td><td>Khud se M code likhna ho</td><td>Get Data → Blank Query</td></tr>
+      </table>
+    </div>
+
+    <div class="tip">SQL Server se direct connect karo jab ho sake — Excel files se better performance milta hai bade data mein.</div>
+
+    <div class="warn-box">
+      <strong>⚠️ Galti mat karna</strong>
+      Seedha data import mat karo bina Power Query dekhe. Pehle data preview dekho — types, nulls, format check karo.
+    </div>
+  </div>
+
+  <!-- 03 DATA CLEANING -->
+  <div class="sec" id="clean">
+    <div class="sec-hdr">
+      <div class="sec-icon">🧹</div>
+      <div>
+        <h2>Data Clean Karna — Power Query</h2>
+        <div class="sec-sub">90% analysis ki quality yahaan decide hoti hai</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Power Query mein Kab Kya Karo</div>
+
+      <div class="phase">
+        <span class="phase-icon">🔍</span>
+        <span class="phase-label">Step 1 — Check karo</span>
+        <span style="color:var(--muted)">Column Quality, Column Distribution, Column Profile — View tab mein enable karo</span>
+      </div>
+      <div class="phase">
+        <span class="phase-icon">🗑️</span>
+        <span class="phase-label">Step 2 — Hatao</span>
+        <span style="color:var(--muted)">Extra columns, duplicate rows, empty rows</span>
+      </div>
+      <div class="phase">
+        <span class="phase-icon">✏️</span>
+        <span class="phase-label">Step 3 — Theek karo</span>
+        <span style="color:var(--muted)">Data types, NULL values, text case, spaces</span>
+      </div>
+      <div class="phase">
+        <span class="phase-icon">⚙️</span>
+        <span class="phase-label">Step 4 — Transform karo</span>
+        <span style="color:var(--muted)">Columns split karo, merge karo, pivot/unpivot karo</span>
+      </div>
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <tr><th>Problem</th><th>Power Query mein Kaise Theek Karein</th><th>Kab Zarurat Padti Hai</th></tr>
+        <tr><td><strong>Wrong data type</strong></td><td>Column select → Data Type change karo</td><td>Numbers text mein aa jaate hain</td></tr>
+        <tr><td><strong>NULL / blank values</strong></td><td>Replace Values → null ko 0 ya "Unknown" karo</td><td>Calculation mein error aata hai</td></tr>
+        <tr><td><strong>Extra spaces</strong></td><td>Transform → Trim</td><td>City "Delhi " aur "Delhi" alag dikhte hain</td></tr>
+        <tr><td><strong>Text case problem</strong></td><td>Transform → Capitalize / Uppercase / Lowercase</td><td>"mumbai" aur "Mumbai" alag group banta hai</td></tr>
+        <tr><td><strong>Duplicate rows</strong></td><td>Home → Remove Duplicates</td><td>Same order 2 baar aa raha hai</td></tr>
+        <tr><td><strong>Column split karna</strong></td><td>Transform → Split Column → By Delimiter</td><td>"First Last" name ko alag karna ho</td></tr>
+        <tr><td><strong>Date format galat</strong></td><td>Data type Date set karo, locale change karo</td><td>Date sort sahi nahi hoti</td></tr>
+        <tr><td><strong>Unpivot karna</strong></td><td>Columns select → Transform → Unpivot</td><td>Months column mein hain, rows mein chahiye</td></tr>
+      </table>
+    </div>
+
+    <div class="tip">Har step Power Query mein "Applied Steps" mein save hoti hai. Kabhi bhi undo kar sakte ho — is liye Power Query mein karo, source file mein haath mat lagao.</div>
+
+    <div class="use-box">
+      <strong>✅ Golden Rule</strong>
+      Jab bhi data aaye — pehle Power Query mein jaao, column profile dekho, tab "Close & Apply" karo. Seedhe report view pe mat jaao.
+    </div>
+  </div>
+
+  <!-- 04 RELATIONSHIPS -->
+  <div class="sec" id="relations">
+    <div class="sec-hdr">
+      <div class="sec-icon">🔗</div>
+      <div>
+        <h2>Relationships — Tables Ko Jodna</h2>
+        <div class="sec-sub">Model View mein jaao — yeh SQL ke JOIN jaisa hai</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Relationship Types</div>
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>Type</th><th>Matlab</th><th>Example</th></tr>
+          <tr><td><strong>One-to-Many ⭐</strong></td><td>1 customer → many orders</td><td>Customers → Orders (sabse common)</td></tr>
+          <tr><td><strong>Many-to-One</strong></td><td>Many orders → 1 product</td><td>Orders → Products</td></tr>
+          <tr><td><strong>One-to-One</strong></td><td>Ek row ka ek match</td><td>Employee → Employee Details</td></tr>
+          <tr><td><strong>Many-to-Many ⚠️</strong></td><td>Dono taraf many</td><td>Avoid karo — performance kharab</td></tr>
+        </table>
+      </div>
+      <div class="warn-box">
+        <strong>⚠️ Yaad Rakho</strong>
+        Many-to-Many relationships se bachna chahiye. Agar aaye toh ek "Bridge Table" banao.
+      </div>
+      <div class="use-box">
+        <strong>✅ Star Schema Banao — Best Practice</strong>
+        Ek central "Fact Table" (sales, orders) raho. Baaki "Dimension Tables" (customers, products, dates) usse connect karo. Yahi industry standard hai.
+      </div>
+    </div>
+  </div>
+
+  <!-- 05 DAX -->
+  <div class="sec" id="dax">
+    <div class="sec-hdr">
+      <div class="sec-icon">📐</div>
+      <div>
+        <h2>DAX Formulas — Complete Guide</h2>
+        <div class="sec-sub">Data Analysis Expressions — Power BI ki asli taakat</div>
+      </div>
+    </div>
+
+    <!-- SUM / COUNT / AVERAGE -->
+    <div class="dax-card">
+      <div class="dax-name">SUM / COUNT / AVERAGE / MIN / MAX</div>
+      <div class="dax-desc">Basic aggregation — sabse pehle yeh seekho</div>
+      <div class="code-block">
+        <div class="code-hdr"><div class="dots"><div class="dot dr"></div><div class="dot dy"></div><div class="dot dg"></div></div><span class="code-lang">DAX</span></div>
+        <pre><span class="cm">-- Total Revenue</span>
+<span class="acc">Total Revenue</span> = <span class="fn">SUM</span>(<span class="tbl">Sales</span>[<span class="col">Amount</span>])
+
+<span class="cm">-- Total Orders count</span>
+<span class="acc">Total Orders</span> = <span class="fn">COUNT</span>(<span class="tbl">Sales</span>[<span class="col">Order_ID</span>])
+
+<span class="cm">-- Unique customers count</span>
+<span class="acc">Unique Customers</span> = <span class="fn">DISTINCTCOUNT</span>(<span class="tbl">Sales</span>[<span class="col">Customer_ID</span>])
+
+<span class="cm">-- Average order value</span>
+<span class="acc">Avg Order Value</span> = <span class="fn">AVERAGE</span>(<span class="tbl">Sales</span>[<span class="col">Amount</span>])</pre>
+      </div>
+      <div class="use-box"><strong>✅ Kab Use Karo</strong>KPI cards, summary numbers, total revenue, total units sold dikhane ke liye.</div>
+    </div>
+
+    <!-- CALCULATE -->
+    <div class="dax-card">
+      <div class="dax-name">CALCULATE</div>
+      <div class="dax-desc">DAX ka sabse powerful function — filter lagake calculate karo. Yeh aana hi chahiye.</div>
+      <div class="code-block">
+        <div class="code-hdr"><div class="dots"><div class="dot dr"></div><div class="dot dy"></div><div class="dot dg"></div></div><span class="code-lang">DAX</span></div>
+        <pre><span class="cm">-- Sirf Delhi ki sales</span>
+<span class="acc">Delhi Sales</span> = 
+  <span class="fn">CALCULATE</span>(
+    <span class="fn">SUM</span>(<span class="tbl">Sales</span>[<span class="col">Amount</span>]),
+    <span class="tbl">Sales</span>[<span class="col">City</span>] <span class="op">=</span> <span class="str">"Delhi"</span>
+  )
+
+<span class="cm">-- 2024 ki total sales</span>
+<span class="acc">Sales 2024</span> = 
+  <span class="fn">CALCULATE</span>(
+    <span class="fn">SUM</span>(<span class="tbl">Sales</span>[<span class="col">Amount</span>]),
+    <span class="fn">YEAR</span>(<span class="tbl">Sales</span>[<span class="col">Date</span>]) <span class="op">=</span> <span class="num">2024</span>
+  )
+
+<span class="cm">-- All filters hata ke (grand total)</span>
+<span class="acc">Total Sales All</span> = 
+  <span class="fn">CALCULATE</span>(
+    <span class="fn">SUM</span>(<span class="tbl">Sales</span>[<span class="col">Amount</span>]),
+    <span class="fn">ALL</span>(<span class="tbl">Sales</span>)
+  )</pre>
+      </div>
+      <div class="use-box"><strong>✅ Kab Use Karo</strong>Jab filter ke saath calculate karna ho — specific category, region, time period ki sales. % contribution bhi CALCULATE se milti hai.</div>
+    </div>
+
+    <!-- IF -->
+    <div class="dax-card">
+      <div class="dax-name">IF / SWITCH</div>
+      <div class="dax-desc">Condition ke hisaab se alag value — Excel ke IF jaisa</div>
+      <div class="code-block">
+        <div class="code-hdr"><div class="dots"><div class="dot dr"></div><div class="dot dy"></div><div class="dot dg"></div></div><span class="code-lang">DAX</span></div>
+        <pre><span class="cm">-- Sales category</span>
+<span class="acc">Sales Category</span> = 
+  <span class="fn">IF</span>(<span class="tbl">Sales</span>[<span class="col">Amount</span>] <span class="op">></span> <span class="num">50000</span>, <span class="str">"High"</span>, <span class="str">"Low"</span>)
+
+<span class="cm">-- Multiple conditions ke liye SWITCH better hai</span>
+<span class="acc">Performance</span> = 
+  <span class="fn">SWITCH</span>(
+    <span class="kw">TRUE</span>(),
+    <span class="tbl">Sales</span>[<span class="col">Amount</span>] <span class="op">>=</span> <span class="num">100000</span>, <span class="str">"🟢 Excellent"</span>,
+    <span class="tbl">Sales</span>[<span class="col">Amount</span>] <span class="op">>=</span> <span class="num">50000</span>,  <span class="str">"🟡 Good"</span>,
+    <span class="tbl">Sales</span>[<span class="col">Amount</span>] <span class="op">>=</span> <span class="num">20000</span>,  <span class="str">"🟠 Average"</span>,
+    <span class="str">"🔴 Low"</span>
+  )</pre>
+      </div>
+      <div class="use-box"><strong>✅ Kab Use Karo</strong>Color coding ke liye, performance buckets banana ho (High/Medium/Low), conditional labels dikhane ho.</div>
+    </div>
+
+    <!-- TIME INTELLIGENCE -->
+    <div class="dax-card">
+      <div class="dax-name">Time Intelligence Functions ⭐</div>
+      <div class="dax-desc">Date Table hona zaroori hai inke liye — yeh functions interviews mein pooche jaate hain</div>
+      <div class="code-block">
+        <div class="code-hdr"><div class="dots"><div class="dot dr"></div><div class="dot dy"></div><div class="dot dg"></div></div><span class="code-lang">DAX</span></div>
+        <pre><span class="cm">-- Year-to-date sales (jan se aaj tak)</span>
+<span class="acc">Sales YTD</span> = 
+  <span class="fn">TOTALYTD</span>(<span class="fn">SUM</span>(<span class="tbl">Sales</span>[<span class="col">Amount</span>]), <span class="tbl">Dates</span>[<span class="col">Date</span>])
+
+<span class="cm">-- Pichle mahine ki sales</span>
+<span class="acc">Sales Last Month</span> = 
+  <span class="fn">CALCULATE</span>(
+    <span class="fn">SUM</span>(<span class="tbl">Sales</span>[<span class="col">Amount</span>]),
+    <span class="fn">PREVIOUSMONTH</span>(<span class="tbl">Dates</span>[<span class="col">Date</span>])
+  )
+
+<span class="cm">-- Month-over-Month Growth %</span>
+<span class="acc">MoM Growth %</span> = 
+  <span class="kw">VAR</span> CurrentMonth = <span class="fn">SUM</span>(<span class="tbl">Sales</span>[<span class="col">Amount</span>])
+  <span class="kw">VAR</span> LastMonth = 
+    <span class="fn">CALCULATE</span>(
+      <span class="fn">SUM</span>(<span class="tbl">Sales</span>[<span class="col">Amount</span>]),
+      <span class="fn">PREVIOUSMONTH</span>(<span class="tbl">Dates</span>[<span class="col">Date</span>])
+    )
+  <span class="kw">RETURN</span>
+    <span class="fn">DIVIDE</span>(CurrentMonth - LastMonth, LastMonth, <span class="num">0</span>)
+
+<span class="cm">-- Same period last year</span>
+<span class="acc">Sales SPLY</span> = 
+  <span class="fn">CALCULATE</span>(
+    <span class="fn">SUM</span>(<span class="tbl">Sales</span>[<span class="col">Amount</span>]),
+    <span class="fn">SAMEPERIODLASTYEAR</span>(<span class="tbl">Dates</span>[<span class="col">Date</span>])
+  )</pre>
+      </div>
+      <div class="use-box"><strong>✅ Kab Use Karo</strong>YTD, MTD, Year-over-Year comparison, growth trend — business mein yeh hamesha poochhte hain. Date Table zaroori hai — bina date table ke kaam nahi karega.</div>
+      <div class="warn-box"><strong>⚠️ Date Table Banao Pehle</strong>Mark as Date Table karo Model View mein. TOTALYTD aur baaki time functions tabhi kaam karte hain.</div>
+    </div>
+
+    <!-- DIVIDE -->
+    <div class="dax-card">
+      <div class="dax-name">DIVIDE / % Contribution</div>
+      <div class="dax-desc">Division hamesha DIVIDE se karo — zero se divide hone ka error avoid hota hai</div>
+      <div class="code-block">
+        <div class="code-hdr"><div class="dots"><div class="dot dr"></div><div class="dot dy"></div><div class="dot dg"></div></div><span class="code-lang">DAX</span></div>
+        <pre><span class="cm">-- Safe division</span>
+<span class="acc">Profit Margin %</span> = 
+  <span class="fn">DIVIDE</span>(<span class="tbl">Sales</span>[<span class="col">Profit</span>], <span class="tbl">Sales</span>[<span class="col">Revenue</span>], <span class="num">0</span>)
+
+<span class="cm">-- % contribution (is category ka total ka kitna %)</span>
+<span class="acc">Sales % of Total</span> = 
+  <span class="fn">DIVIDE</span>(
+    <span class="fn">SUM</span>(<span class="tbl">Sales</span>[<span class="col">Amount</span>]),
+    <span class="fn">CALCULATE</span>(<span class="fn">SUM</span>(<span class="tbl">Sales</span>[<span class="col">Amount</span>]), <span class="fn">ALL</span>(<span class="tbl">Sales</span>)),
+    <span class="num">0</span>
+  )</pre>
+      </div>
+      <div class="use-box"><strong>✅ Kab Use Karo</strong>Profit margin, conversion rate, % contribution — koi bhi ratio ya percentage calculate karna ho.</div>
+    </div>
+
+    <!-- RANKX -->
+    <div class="dax-card">
+      <div class="dax-name">RANKX / TOPN</div>
+      <div class="dax-desc">Ranking nikalna — Top performers dhundhna</div>
+      <div class="code-block">
+        <div class="code-hdr"><div class="dots"><div class="dot dr"></div><div class="dot dy"></div><div class="dot dg"></div></div><span class="code-lang">DAX</span></div>
+        <pre><span class="cm">-- Product rank by sales</span>
+<span class="acc">Product Rank</span> = 
+  <span class="fn">RANKX</span>(
+    <span class="fn">ALL</span>(<span class="tbl">Products</span>[<span class="col">Product_Name</span>]),
+    <span class="fn">SUM</span>(<span class="tbl">Sales</span>[<span class="col">Amount</span>]),
+    ,
+    <span class="fn">DESC</span>
+  )
+
+<span class="cm">-- Filter: sirf top 5 dikhao</span>
+<span class="acc">Top 5 Filter</span> = 
+  <span class="fn">IF</span>([<span class="col">Product Rank</span>] <span class="op"><=</span> <span class="num">5</span>, <span class="num">1</span>, <span class="num">0</span>)</pre>
+      </div>
+      <div class="use-box"><strong>✅ Kab Use Karo</strong>"Top 10 products", "Best performing salespeople" — leaderboard type visuals ke liye.</div>
+    </div>
+
+    <!-- VAR RETURN -->
+    <div class="dax-card">
+      <div class="dax-name">VAR ... RETURN</div>
+      <div class="dax-desc">Complex formulas ko readable aur fast banata hai — advanced level</div>
+      <div class="code-block">
+        <div class="code-hdr"><div class="dots"><div class="dot dr"></div><div class="dot dy"></div><div class="dot dg"></div></div><span class="code-lang">DAX</span></div>
+        <pre><span class="cm">-- Variables use karke readable formula</span>
+<span class="acc">YoY Growth %</span> = 
+  <span class="kw">VAR</span> SalesCY = <span class="fn">SUM</span>(<span class="tbl">Sales</span>[<span class="col">Amount</span>])
+  <span class="kw">VAR</span> SalesPY = 
+    <span class="fn">CALCULATE</span>(
+      <span class="fn">SUM</span>(<span class="tbl">Sales</span>[<span class="col">Amount</span>]),
+      <span class="fn">SAMEPERIODLASTYEAR</span>(<span class="tbl">Dates</span>[<span class="col">Date</span>])
+    )
+  <span class="kw">RETURN</span>
+    <span class="fn">DIVIDE</span>(SalesCY - SalesPY, SalesPY, <span class="num">0</span>)</pre>
+      </div>
+      <div class="use-box"><strong>✅ Kab Use Karo</strong>Jab ek formula mein same calculation baar baar aaye — VAR mein store karo, ek baar calculate hoga, fast bhi aur readable bhi.</div>
+    </div>
+
+  </div>
+
+  <!-- 06 MEASURES VS COLUMNS -->
+  <div class="sec" id="measures">
+    <div class="sec-hdr">
+      <div class="sec-icon">⚖️</div>
+      <div>
+        <h2>Measures vs Calculated Columns</h2>
+        <div class="sec-sub">Yeh confusion sabko hota hai — ek baar samajh lo</div>
+      </div>
+    </div>
+    <div class="two-col">
+      <div class="card">
+        <div class="card-title">📐 Measure <span class="badge b-green">Recommended</span></div>
+        <p>Context ke hisaab se dynamically calculate hota hai. File size nahi badhata.</p>
+        <div class="code-block">
+          <div class="code-hdr"><div class="dots"><div class="dot dr"></div><div class="dot dy"></div><div class="dot dg"></div></div><span class="code-lang">DAX</span></div>
+          <pre><span class="acc">Total Sales</span> = 
+  <span class="fn">SUM</span>(<span class="tbl">Sales</span>[<span class="col">Amount</span>])</pre>
+        </div>
+        <div class="use-box" style="margin-top:8px"><strong>✅ Use Karo Jab</strong>Charts, cards, tables mein aggregated value chahiye — SUM, COUNT, AVERAGE, CALCULATE.</div>
+      </div>
+      <div class="card">
+        <div class="card-title">📋 Calculated Column <span class="badge b-yellow">Soch ke Use Karo</span></div>
+        <p>Har row ke liye ek value calculate karke table mein add hoti hai. File size badhta hai.</p>
+        <div class="code-block">
+          <div class="code-hdr"><div class="dots"><div class="dot dr"></div><div class="dot dy"></div><div class="dot dg"></div></div><span class="code-lang">DAX</span></div>
+          <pre><span class="acc">Full Name</span> = 
+  <span class="tbl">Customers</span>[<span class="col">First</span>] 
+  <span class="op">&</span> <span class="str">" "</span> 
+  <span class="op">&</span> <span class="tbl">Customers</span>[<span class="col">Last</span>]</pre>
+        </div>
+        <div class="use-box" style="margin-top:8px"><strong>✅ Use Karo Jab</strong>Row-level calculation — jaise Full Name banana, category assign karna, ya filter column banana.</div>
+      </div>
+    </div>
+    <div class="tip">99% kaam Measures se hota hai. Calculated Column sirf tab banao jab slice/filter karna ho us value pe.</div>
+  </div>
+
+  <!-- 07 CHARTS -->
+  <div class="sec" id="charts">
+    <div class="sec-hdr">
+      <div class="sec-icon">📊</div>
+      <div>
+        <h2>Charts & Visualizations — Kab Kaun Sa Use Karo</h2>
+        <div class="sec-sub">Galat chart = galat insight. Sahi chart choose karna skill hai.</div>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-name">📊 Bar Chart / Column Chart <span class="badge b-green">Sabse Common</span></div>
+      <div class="chart-when"><strong>Kab use karo:</strong> Categories ki comparison karna ho — kaunsa product zyada bika, kaunsi city top hai.</div>
+      <div class="chart-ex">✅ Example: "City-wise Total Revenue", "Product Category Sales Comparison"</div>
+      <div class="chart-avoid">❌ Avoid: Time trend dikhane ke liye mat use karo</div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-name">📈 Line Chart <span class="badge b-blue">Trend ke liye</span></div>
+      <div class="chart-when"><strong>Kab use karo:</strong> Time ke saath trend dikhana ho — monthly sales, weekly growth.</div>
+      <div class="chart-ex">✅ Example: "Monthly Revenue Trend", "Daily Active Users over Time"</div>
+      <div class="chart-avoid">❌ Avoid: Categories compare karne ke liye mat use karo</div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-name">🥧 Pie / Donut Chart <span class="badge b-yellow">Sirf % ke liye</span></div>
+      <div class="chart-when"><strong>Kab use karo:</strong> Sirf jab parts-of-whole dikhana ho — aur categories 5 se kam hon.</div>
+      <div class="chart-ex">✅ Example: "Revenue by Region (4 regions)", "Product Mix %"</div>
+      <div class="chart-avoid">❌ Avoid: 5+ categories mein, ya exact comparison chahiye ho tab</div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-name">🗺️ Map Visual <span class="badge b-teal">Geography ke liye</span></div>
+      <div class="chart-when"><strong>Kab use karo:</strong> City, State, Country ke hisaab se data dikhana ho.</div>
+      <div class="chart-ex">✅ Example: "State-wise Sales India Map", "City-wise Customer Distribution"</div>
+      <div class="chart-avoid">❌ Avoid: Non-geographic data pe — bakwaas lagta hai</div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-name">🎯 KPI Card / Card Visual <span class="badge b-green">Har Dashboard mein</span></div>
+      <div class="chart-when"><strong>Kab use karo:</strong> Single important number dikhana — Total Revenue, Total Orders, Profit %.</div>
+      <div class="chart-ex">✅ Example: "₹12.5L Total Revenue", "1,234 Orders This Month"</div>
+      <div class="chart-avoid">❌ Avoid: Detailed breakdown ke liye</div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-name">🌲 Treemap <span class="badge b-purple">Hierarchy ke liye</span></div>
+      <div class="chart-when"><strong>Kab use karo:</strong> Hierarchy mein proportions dikhane ho — Category → Sub-category.</div>
+      <div class="chart-ex">✅ Example: "Product Category → Sub-category Revenue Share"</div>
+      <div class="chart-avoid">❌ Avoid: Trend ya time-based data ke liye</div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-name">🌊 Waterfall Chart <span class="badge b-orange">Finance ke liye</span></div>
+      <div class="chart-when"><strong>Kab use karo:</strong> Kahan se kahan aaye — additions aur subtractions dikhana.</div>
+      <div class="chart-ex">✅ Example: "Net Profit Breakdown", "Budget vs Actual Variance"</div>
+      <div class="chart-avoid">❌ Avoid: Simple comparison ke liye — bar chart better hai</div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-name">🔵 Scatter Chart <span class="badge b-blue">Correlation ke liye</span></div>
+      <div class="chart-when"><strong>Kab use karo:</strong> Do variables ka relationship dikhana — kya price badhne se sales girti hai?</div>
+      <div class="chart-ex">✅ Example: "Marketing Spend vs Revenue", "Price vs Units Sold"</div>
+      <div class="chart-avoid">❌ Avoid: Categories compare karne ke liye</div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-name">📋 Table / Matrix <span class="badge b-yellow">Detail ke liye</span></div>
+      <div class="chart-when"><strong>Kab use karo:</strong> Exact numbers chahiye ho — jab chart se detail nahi milti. Matrix pivot table jaisi hoti hai.</div>
+      <div class="chart-ex">✅ Example: "Product-wise Monthly Sales Matrix", "Detailed Order List"</div>
+      <div class="chart-avoid">❌ Avoid: Dashboard ka main visual mat banao — supporting detail ke liye rakho</div>
+    </div>
+
+    <div class="tip">Ek dashboard mein maximum 5-6 visuals rakho. Zyada visuals = confusion. Ek page, ek story.</div>
+  </div>
+
+  <!-- 08 FILTERS -->
+  <div class="sec" id="filters">
+    <div class="sec-hdr">
+      <div class="sec-icon">🎛️</div>
+      <div>
+        <h2>Filters & Slicers</h2>
+        <div class="sec-sub">Dashboard ko interactive banana</div>
+      </div>
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <tr><th>Tool</th><th>Kya karta hai</th><th>Kab use karo</th></tr>
+        <tr><td><strong>Slicer</strong></td><td>Click karke filter karo — buttons ya dropdown</td><td>Date, City, Category filter — user interaction</td></tr>
+        <tr><td><strong>Filter Pane</strong></td><td>Visual, Page, ya Report level filter</td><td>Developer ne set kiya hua — user nahi dekhta</td></tr>
+        <tr><td><strong>Date Slicer</strong></td><td>Date range select karo</td><td>Hamesha date filter hona chahiye dashboard mein</td></tr>
+        <tr><td><strong>Drill-through</strong></td><td>Ek visual pe click karke detail page pe jao</td><td>Summary se detail pe jaana — advanced dashboards</td></tr>
+        <tr><td><strong>Cross-filter</strong></td><td>Ek visual click karne se doosre visuals filter ho jaate hain</td><td>Default Power BI mein hota hai — on/off kar sakte ho</td></tr>
+      </table>
+    </div>
+    <div class="use-box">
+      <strong>✅ Best Practice</strong>
+      Har dashboard mein Date Slicer aur main Category Slicer zaroor rakho. User ko khud filter karne do — wo khud apna answer dhundhega.
+    </div>
+  </div>
+
+  <!-- 09 DASHBOARD TIPS -->
+  <div class="sec" id="tips">
+    <div class="sec-hdr">
+      <div class="sec-icon">🎯</div>
+      <div>
+        <h2>Dashboard Design Best Practices</h2>
+        <div class="sec-sub">Professional dashboard aur amateur mein yahi fark hota hai</div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="card">
+        <div class="card-title" style="color:var(--green)">✅ Karo</div>
+        <p style="font-size:13px; line-height:2">
+          📌 Top pe KPI cards rakho<br>
+          📌 Consistent colors use karo (2-3 max)<br>
+          📌 Date slicer hamesha rakho<br>
+          📌 Mobile view bhi check karo<br>
+          📌 Title aur subtitles likho<br>
+          📌 Numbers format karo (₹1.2L not 120000)<br>
+          📌 White space do — crowded mat karo
+        </p>
+      </div>
+      <div class="card">
+        <div class="card-title" style="color:var(--red)">❌ Mat Karo</div>
+        <p style="font-size:13px; line-height:2">
+          ❌ 3D charts — misleading hote hain<br>
+          ❌ 7+ colors ek chart mein<br>
+          ❌ Pie chart with 6+ categories<br>
+          ❌ Bina title ke visuals<br>
+          ❌ Ek page mein 10+ visuals<br>
+          ❌ Default blue color har jagah<br>
+          ❌ Unlabeled axes
+        </p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🎨 Color Strategy</div>
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>Use</th><th>Color</th><th>Kyun</th></tr>
+          <tr><td>Primary metric / highlight</td><td>Ek strong color — blue ya orange</td><td>Eye ko direct karo</td></tr>
+          <tr><td>Positive / growth</td><td>Green</td><td>Universal samajh</td></tr>
+          <tr><td>Negative / decline</td><td>Red</td><td>Universal samajh</td></tr>
+          <tr><td>Neutral / background</td><td>Grey</td><td>Main color stand out kare</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- 10 PRACTICE PLAN -->
+  <div class="sec" id="practice">
+    <div class="sec-hdr">
+      <div class="sec-icon">🚀</div>
+      <div>
+        <h2>Practice Plan — 30 Din Ka</h2>
+        <div class="sec-sub">Yeh follow karo — 1 mahine mein job-ready ho jaoge</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="steps">
+        <div class="step">
+          <div class="snum">1</div>
+          <div class="sbody">
+            <h4>Week 1 — Interface aur Data</h4>
+            <p>Power BI Desktop install karo (free). Ek Excel file import karo, Power Query explore karo, basic cleaning karo. <strong>Kaggle ke "Superstore Sales" dataset</strong> se shuru karo.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="snum">2</div>
+          <div class="sbody">
+            <h4>Week 2 — DAX Basics</h4>
+            <p>SUM, COUNT, CALCULATE seekho. Date Table banao. YTD aur MoM measure banao. KPI cards aur bar charts banao.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="snum">3</div>
+          <div class="sbody">
+            <h4>Week 3 — Pehla Real Dashboard</h4>
+            <p>Superstore data pe <strong>Sales Dashboard</strong> banao — KPIs, trend chart, map, top products. Slicers lagao. LinkedIn pe post karo screenshot.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="snum">4</div>
+          <div class="sbody">
+            <h4>Week 4 — Advanced + Portfolio</h4>
+            <p>RANKX, DIVIDE, VAR seekho. Ek aur domain ka dashboard banao — HR ya Finance. <strong>GitHub pe upload karo</strong>, PDF export karo, resume mein add karo.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🛠️ Free Resources</div>
+      <div class="two-col">
+        <div>
+          <p style="font-size:13px; color:var(--green); font-weight:600; margin-bottom:8px">Seekhne ke liye</p>
+          <p style="font-size:13px; color:var(--muted); line-height:2">
+            • Microsoft Learn (free official)<br>
+            • Guy in a Cube (YouTube)<br>
+            • SQLBI.com (DAX ke liye best)<br>
+            • Chandoo.org Power BI
+          </p>
+        </div>
+        <div>
+          <p style="font-size:13px; color:var(--blue); font-weight:600; margin-bottom:8px">Practice Datasets</p>
+          <p style="font-size:13px; color:var(--muted); line-height:2">
+            • Kaggle.com (Superstore, HR)<br>
+            • data.gov.in (India data)<br>
+            • Maven Analytics (free)<br>
+            • Microsoft Sample Data
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">💼 Interview Mein Kya Poochha Jaata Hai</div>
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>Question</th><th>Concept</th></tr>
+          <tr><td>Measure aur Calculated Column mein fark?</td><td>Measure dynamic, Column static</td></tr>
+          <tr><td>CALCULATE kya karta hai?</td><td>Filter context change karta hai</td></tr>
+          <tr><td>Star Schema kya hai?</td><td>Fact + Dimension tables</td></tr>
+          <tr><td>YTD measure kaise banate ho?</td><td>TOTALYTD + Date Table</td></tr>
+          <tr><td>Slow dashboard fast kaise karo?</td><td>Less visuals, measures prefer, import mode</td></tr>
+          <tr><td>Row-level Security kya hai?</td><td>User ke hisaab se data restrict karna</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <strong>SQL + Power BI</strong> 
+</div>
+
+</body>
+</html>
