@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data Analytics — Kaam ka Asli Guide</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&family=Playfair+Display:ital,wght@0,700;1,400&display=swap');
+
+  :root {
+    --bg: #f7f3ee;
+    --paper: #faf8f5;
+    --ink: #1a1410;
+    --ink2: #3d3530;
+    --muted: #9b9189;
+    --rule: #e8e0d5;
+    --accent: #c0392b;
+    --accent2: #e67e22;
+    --green: #1e7f5e;
+    --blue: #1a4f7a;
+    --purple: #5b2d8e;
+    --highlight: #fff3cd;
+    --red-bg: #fdf0ee;
+    --green-bg: #edf7f3;
+    --blue-bg: #eef4fa;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  /* HERO */
+  .hero {
+    background: var(--ink);
+    color: #f7f3ee;
+    padding: 64px 32px 56px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::after {
+    content: 'DATA\AANALYTICS';
+    white-space: pre;
+    position: absolute;
+    right: -20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: 'Playfair Display', serif;
+    font-size: 96px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.04);
+    line-height: 1;
+    pointer-events: none;
+  }
+  .hero-tag {
+    display: inline-block;
+    background: var(--accent);
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 2px;
+    margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 14px;
+    max-width: 600px;
+  }
+  .hero h1 em {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--accent2);
+  }
+  .hero p {
+    color: #b0a898;
+    max-width: 480px;
+    font-size: 14.5px;
+  }
+
+  /* TABS */
+  .tabs {
+    background: var(--paper);
+    border-bottom: 2px solid var(--rule);
+    padding: 0 24px;
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab {
+    padding: 14px 18px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    white-space: nowrap;
+    text-decoration: none;
+    transition: all 0.15s;
+  }
+  .tab:hover { color: var(--ink2); }
+  .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  /* LAYOUT */
+  main { max-width: 920px; margin: 0 auto; padding: 40px 20px 80px; }
+
+  /* SECTION */
+  .section { margin-bottom: 56px; }
+  .section-head {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .section-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: var(--rule);
+    line-height: 1;
+    flex-shrink: 0;
+  }
+  .section-meta { flex: 1; }
+  .section-label-text {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    margin-bottom: 2px;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--ink);
+  }
+
+  /* PROCESS STEPS */
+  .steps { display: flex; flex-direction: column; gap: 0; }
+  .step {
+    display: flex;
+    gap: 0;
+    position: relative;
+  }
+  .step-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 48px;
+    flex-shrink: 0;
+  }
+  .step-dot {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--ink);
+    color: var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    flex-shrink: 0;
+    z-index: 1;
+  }
+  .step-line {
+    width: 1px;
+    flex: 1;
+    background: var(--rule);
+    min-height: 20px;
+  }
+  .step-content {
+    padding: 0 0 28px 16px;
+    flex: 1;
+    padding-top: 4px;
+  }
+  .step-name {
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .step-desc {
+    font-size: 13.5px;
+    color: var(--ink2);
+    line-height: 1.7;
+    margin-bottom: 10px;
+  }
+  .step-time {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: var(--rule);
+    border-radius: 100px;
+    padding: 2px 10px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+  .step-tools {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+  }
+  .tool-tag {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 2px 9px;
+    font-size: 11px;
+    font-family: 'Fira Code', monospace;
+    color: var(--blue);
+    font-weight: 500;
+  }
+
+  /* CARD STYLES */
+  .card {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    padding: 20px 22px;
+    margin-bottom: 14px;
+  }
+  .card-title {
+    font-weight: 700;
+    font-size: 14.5px;
+    margin-bottom: 10px;
+    color: var(--ink);
+  }
+  .card-body { font-size: 13.5px; color: var(--ink2); line-height: 1.75; }
+
+  /* TIP / WARNING BOXES */
+  .tip {
+    background: var(--green-bg);
+    border-left: 3px solid var(--green);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px;
+    margin: 10px 0;
+    font-size: 13px;
+    color: #1a4a38;
+    line-height: 1.6;
+  }
+  .tip strong { color: var(--green); display: block; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 3px; }
+
+  .warn {
+    background: var(--red-bg);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px;
+    margin: 10px 0;
+    font-size: 13px;
+    color: #5c1a14;
+    line-height: 1.6;
+  }
+  .warn strong { color: var(--accent); display: block; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 3px; }
+
+  .note {
+    background: var(--blue-bg);
+    border-left: 3px solid var(--blue);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px;
+    margin: 10px 0;
+    font-size: 13px;
+    color: #1a3350;
+    line-height: 1.6;
+  }
+  .note strong { color: var(--blue); display: block; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 3px; }
+
+  .highlight {
+    background: var(--highlight);
+    border-radius: 4px;
+    padding: 1px 5px;
+    font-weight: 600;
+  }
+
+  /* TWO COL */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media(max-width:600px){ .two-col { grid-template-columns: 1fr; } }
+
+  /* DO / DONT */
+  .do-dont { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px; }
+  @media(max-width:600px){ .do-dont { grid-template-columns: 1fr; } }
+  .do-box {
+    background: var(--green-bg);
+    border: 1px solid #b8e0d0;
+    border-radius: 10px;
+    padding: 18px;
+  }
+  .dont-box {
+    background: var(--red-bg);
+    border: 1px solid #f0c4bc;
+    border-radius: 10px;
+    padding: 18px;
+  }
+  .do-box h4 { color: var(--green); font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 12px; }
+  .dont-box h4 { color: var(--accent); font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 12px; }
+  .do-dont li {
+    font-size: 13px;
+    line-height: 1.6;
+    margin-bottom: 8px;
+    padding-left: 18px;
+    position: relative;
+    color: var(--ink2);
+  }
+  .do-box li::before { content: '✓'; position: absolute; left: 0; color: var(--green); font-weight: 700; }
+  .dont-box li::before { content: '✗'; position: absolute; left: 0; color: var(--accent); font-weight: 700; }
+
+  /* TIME SAVERS */
+  .time-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px,1fr)); gap: 14px; }
+  .time-card {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    padding: 18px;
+    position: relative;
+  }
+  .time-save-badge {
+    position: absolute;
+    top: 14px; right: 14px;
+    background: var(--green);
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 100px;
+  }
+  .time-card h4 { font-size: 13.5px; font-weight: 700; margin-bottom: 6px; color: var(--ink); }
+  .time-card p { font-size: 12.5px; color: var(--ink2); line-height: 1.6; }
+  .time-card code {
+    display: block;
+    margin-top: 8px;
+    font-family: 'Fira Code', monospace;
+    font-size: 11px;
+    background: var(--bg);
+    border: 1px solid var(--rule);
+    padding: 6px 10px;
+    border-radius: 6px;
+    color: var(--blue);
+    line-height: 1.6;
+  }
+
+  /* STANDOUT TIPS */
+  .standout-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr)); gap: 14px; }
+  .standout-card {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    padding: 18px 20px;
+    border-top: 3px solid;
+  }
+  .standout-card.c1 { border-top-color: var(--accent); }
+  .standout-card.c2 { border-top-color: var(--green); }
+  .standout-card.c3 { border-top-color: var(--blue); }
+  .standout-card.c4 { border-top-color: var(--purple); }
+  .standout-card.c5 { border-top-color: var(--accent2); }
+  .standout-card.c6 { border-top-color: #1a7a6e; }
+  .standout-card h4 { font-size: 13.5px; font-weight: 700; margin-bottom: 6px; color: var(--ink); }
+  .standout-card p { font-size: 12.5px; color: var(--ink2); line-height: 1.65; }
+
+  /* CHECKLIST */
+  .checklist { list-style: none; }
+  .checklist li {
+    padding: 10px 0;
+    border-bottom: 1px solid var(--rule);
+    font-size: 13.5px;
+    color: var(--ink2);
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .checklist li:last-child { border-bottom: none; }
+  .check-icon { flex-shrink: 0; margin-top: 2px; }
+
+  /* MISTAKE CARDS */
+  .mistake {
+    background: var(--red-bg);
+    border: 1px solid #f0c4bc;
+    border-radius: 10px;
+    padding: 18px 20px;
+    margin-bottom: 12px;
+  }
+  .mistake-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 8px;
+  }
+  .mistake h4 { font-size: 14px; font-weight: 700; color: var(--accent); }
+  .mistake-fix {
+    font-size: 12px;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 2px 10px;
+    color: var(--green);
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .mistake p { font-size: 13px; color: #5c1a14; line-height: 1.65; }
+
+  /* WORKFLOW TABLE */
+  .flow-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .flow-table th {
+    background: var(--ink);
+    color: var(--bg);
+    padding: 10px 14px;
+    text-align: left;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 600;
+  }
+  .flow-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--rule);
+    color: var(--ink2);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+  .flow-table tr:last-child td { border-bottom: none; }
+  .flow-table tr:hover td { background: rgba(0,0,0,0.02); }
+  .flow-table .bold { font-weight: 600; color: var(--ink); }
+  .flow-table code { font-family: 'Fira Code', monospace; font-size: 11px; background: var(--bg); padding: 1px 5px; border-radius: 3px; color: var(--blue); }
+
+  /* QUOTE */
+  .big-quote {
+    border-left: 4px solid var(--ink);
+    padding: 16px 24px;
+    margin: 24px 0;
+    background: var(--paper);
+    border-radius: 0 8px 8px 0;
+  }
+  .big-quote p {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-style: italic;
+    color: var(--ink);
+    line-height: 1.6;
+  }
+  .big-quote span { font-size: 12px; color: var(--muted); font-family: 'Plus Jakarta Sans', sans-serif; display: block; margin-top: 6px; font-style: normal; }
+
+  /* FOOTER */
+  footer {
+    background: var(--ink);
+    color: #6b6058;
+    text-align: center;
+    padding: 32px 24px;
+    font-size: 12px;
+    letter-spacing: 0.05em;
+  }
+  footer span { color: var(--accent2); }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-tag">Complete Field Guide</div>
+  <h1>Data Analytics<br><em>Kaam ka Asli</em> Handbook</h1>
+  <p>Kya karna hai, kab karna hai, kya galti mat karo — sab kuch ek jagah. Bina time waste kiye best result nikalo.</p>
+</div>
+
+<div class="tabs">
+  <a class="tab active" href="#process">Work Process</a>
+  <a class="tab" href="#tools">Tools & Shortcuts</a>
+  <a class="tab" href="#timesavers">Time Savers</a>
+  <a class="tab" href="#standout">Bheed Se Alag</a>
+  <a class="tab" href="#mistakes">Galtiyan Mat Karo</a>
+  <a class="tab" href="#checklist">Project Checklist</a>
+</div>
+
+<main>
+
+  <!-- ═══════════════════════
+       1. KAAM KA PROCESS
+  ════════════════════════ -->
+  <div class="section" id="process">
+    <div class="section-head">
+      <div class="section-num">01</div>
+      <div class="section-meta">
+        <div class="section-label-text">Workflow</div>
+        <div class="section-title">Data Analytics Ka Sahi Process</div>
+      </div>
+    </div>
+
+    <div class="big-quote">
+      <p>"Data analyst ka 80% time data ko samajhne mein jaata hai, sirf 20% actual analysis mein. Yahi reality hai."</p>
+      <span>— Industry standard breakdown</span>
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-left">
+          <div class="step-dot">1</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-content">
+          <div class="step-name">📌 Problem Define Karo (Sabse Pehle)</div>
+          <div class="step-time">⏱ 10–15 min invest karo</div>
+          <div class="step-desc">Analysis shuru karne se pehle ek line mein likho: <span class="highlight">"Main ye janana chahta hoon ki [X], taaki [Y] decision le sakun."</span> Bina clear question ke analysis waste hai.</div>
+          <div class="tip"><strong>Pro Tip</strong>Stakeholder se poochho: "Agar ye analysis perfect result de, to aap kya differently karoge?" — Yahi tumhara actual goal hai.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-left">
+          <div class="step-dot">2</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-content">
+          <div class="step-name">📥 Data Collect & Understand Karo</div>
+          <div class="step-time">⏱ 20–30% total time</div>
+          <div class="step-desc">Data kahan se aa raha hai? Kitna reliable hai? Koi missing values hain? Duplicate rows? Date format consistent hai?</div>
+          <div class="step-tools">
+            <span class="tool-tag">df.info()</span>
+            <span class="tool-tag">df.describe()</span>
+            <span class="tool-tag">df.isnull().sum()</span>
+            <span class="tool-tag">df.duplicated().sum()</span>
+            <span class="tool-tag">df.dtypes</span>
+          </div>
+          <div class="warn"><strong>Avoid This</strong>Data ko bina dekhe seedha analysis mat shuru karo. Garbage in = Garbage out. 1 ganda row analysis barbad kar sakta hai.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-left">
+          <div class="step-dot">3</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-content">
+          <div class="step-name">🧹 Data Clean Karo</div>
+          <div class="step-time">⏱ 30–40% total time (sabse time-consuming)</div>
+          <div class="step-desc">Missing values handle karo, wrong data types fix karo, outliers deal karo, inconsistent categories fix karo (e.g. "Mumbai" vs "mumbai" vs "MUMBAI").</div>
+          <div class="two-col">
+            <div class="tip"><strong>Missing Values</strong>Numeric → Median fill karo (outliers safe). Categorical → Mode ya "Unknown". 50%+ missing → Column drop karo.</div>
+            <div class="tip"><strong>Outliers</strong>Remove mat karo blindly. Pehle samjho — data entry error hai ya real extreme value? Business context maayene rakhta hai.</div>
+          </div>
+          <div class="step-tools">
+            <span class="tool-tag">df.fillna()</span>
+            <span class="tool-tag">df.dropna()</span>
+            <span class="tool-tag">str.lower().strip()</span>
+            <span class="tool-tag">pd.to_datetime()</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-left">
+          <div class="step-dot">4</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-content">
+          <div class="step-name">🔍 EDA — Explore Karo (Visualize First!)</div>
+          <div class="step-time">⏱ 20–25% total time</div>
+          <div class="step-desc">Patterns dhundho, distributions dekho, relationships explore karo. <span class="highlight">Har analysis visualize se shuru karo — numbers akele liars hote hain.</span></div>
+          <div class="card">
+            <div class="card-title">EDA Sequence — Is Order Mein Karo</div>
+            <table class="flow-table" style="margin-top:8px;">
+              <tr><th>Step</th><th>Kya Karo</th><th>Tool</th></tr>
+              <tr><td class="bold">Univariate</td><td>Har variable ka distribution dekho</td><td><code>histogram, boxplot, countplot</code></td></tr>
+              <tr><td class="bold">Bivariate</td><td>2 variables ka relationship</td><td><code>scatter, heatmap, bar comparison</code></td></tr>
+              <tr><td class="bold">Multivariate</td><td>Multiple variables together</td><td><code>pairplot, correlation matrix</code></td></tr>
+              <tr><td class="bold">Time-based</td><td>Trend dekho (agar date hai)</td><td><code>line chart, rolling avg</code></td></tr>
+            </table>
+          </div>
+          <div class="note"><strong>Secret Weapon</strong>Pandas Profiling ya ydata-profiling se ek line mein complete EDA report bana lo: <code>ProfileReport(df).to_file("eda.html")</code> — 10 minute ka kaam 2 min mein!</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-left">
+          <div class="step-dot">5</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-content">
+          <div class="step-name">📊 Analysis Karo</div>
+          <div class="step-time">⏱ 15–20% total time</div>
+          <div class="step-desc">Ab actual statistical analysis. Problem ke hisaab se method choose karo. Descriptive → Diagnostic → Predictive → Prescriptive — isi order mein sochho.</div>
+          <div class="card">
+            <div class="card-title">4 Types of Analytics — Seedhi Baat</div>
+            <table class="flow-table" style="margin-top:8px;">
+              <tr><th>Type</th><th>Question</th><th>Example</th></tr>
+              <tr><td class="bold">Descriptive</td><td>Kya hua?</td><td>Last month sales kitne the?</td></tr>
+              <tr><td class="bold">Diagnostic</td><td>Kyun hua?</td><td>Sales kyun giri — price, ads, ya competitor?</td></tr>
+              <tr><td class="bold">Predictive</td><td>Kya hoga?</td><td>Agla month sales kitna hoga?</td></tr>
+              <tr><td class="bold">Prescriptive</td><td>Kya karna chahiye?</td><td>Kaunsa action lena chahiye?</td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-left">
+          <div class="step-dot">6</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-content">
+          <div class="step-name">📢 Communicate Karo — Story Bolo, Data Nahi</div>
+          <div class="step-time">⏱ 10–15% time — lekin 80% impact!</div>
+          <div class="step-desc">Sab se important aur sab se neglected step. <span class="highlight">Jo analyst clearly communicate kare, wahi successful hota hai — chahe analysis average ho.</span></div>
+          <div class="tip"><strong>Golden Rule</strong>Executive ko: 1 slide = 1 insight. Pehle conclusion bolo, phir data. "Revenue 23% gira, main reason cart abandonment hai" — phir charts.</div>
+          <div class="warn"><strong>Avoid</strong>Data dump mat karo. 15 charts ki PDF mat bhejo. Audience ne poochha nahi tha, to full technical details mat do.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ═══════════════════════
+       2. TOOLS & SHORTCUTS
+  ════════════════════════ -->
+  <div class="section" id="tools">
+    <div class="section-head">
+      <div class="section-num">02</div>
+      <div class="section-meta">
+        <div class="section-label-text">Arsenal</div>
+        <div class="section-title">Tools — Kya, Kab, Kyun</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <table class="flow-table">
+        <tr><th>Tool</th><th>Best For</th><th>Avoid When</th></tr>
+        <tr>
+          <td class="bold">Excel / Google Sheets</td>
+          <td>Quick analysis, stakeholder ko share karna, small datasets (&lt;1M rows)</td>
+          <td>Large data, automation chahiye, reproducibility zaroori ho</td>
+        </tr>
+        <tr>
+          <td class="bold">Python (Pandas)</td>
+          <td>Big data, automation, ML, custom analysis, repeatability</td>
+          <td>Non-technical team ko deliver karna ho (use Power BI then)</td>
+        </tr>
+        <tr>
+          <td class="bold">SQL</td>
+          <td>Database se data nikalna, aggregations, joins — MUST KNOW</td>
+          <td>Complex statistics — SQL se nikaalo, Python mein analyze karo</td>
+        </tr>
+        <tr>
+          <td class="bold">Power BI / Tableau</td>
+          <td>Interactive dashboards, business users ko present karna</td>
+          <td>One-time analysis — overkill hai</td>
+        </tr>
+        <tr>
+          <td class="bold">R</td>
+          <td>Statistical analysis, academic research, advanced visualization (ggplot2)</td>
+          <td>General-purpose engineering — Python better hai</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="note"><strong>Career Advice</strong>SQL + Python + Power BI ya Tableau — ye teen seekh lo. 90% data analyst jobs cover ho jaate hain. Shuru mein ek achhe se seekho, baaki baad mein.</div>
+  </div>
+
+
+  <!-- ═══════════════════════
+       3. TIME SAVERS
+  ════════════════════════ -->
+  <div class="section" id="timesavers">
+    <div class="section-head">
+      <div class="section-num">03</div>
+      <div class="section-meta">
+        <div class="section-label-text">Efficiency Hacks</div>
+        <div class="section-title">Time Bachane Ke Solid Tarike</div>
+      </div>
+    </div>
+
+    <div class="time-grid">
+      <div class="time-card">
+        <div class="time-save-badge">2x faster</div>
+        <h4>🔄 Templates Banao, Baar Baar Mat Likho</h4>
+        <p>EDA, cleaning, reporting ke liye templates banao. Har project mein copy-paste karo aur customize karo.</p>
+        <code>def quick_eda(df):<br>  print(df.info())<br>  display(df.describe())<br>  print(df.isnull().sum())</code>
+      </div>
+
+      <div class="time-card">
+        <div class="time-save-badge">5x faster</div>
+        <h4>📋 SQL Mein Pehle Filter Karo</h4>
+        <p>Saara data Python mein load mat karo. SQL mein WHERE, GROUP BY karo — sirf zaroori data lo. Network aur RAM dono bachega.</p>
+        <code>SELECT city, SUM(sales)<br>FROM orders<br>WHERE year = 2024<br>GROUP BY city</code>
+      </div>
+
+      <div class="time-card">
+        <div class="time-save-badge">10x faster</div>
+        <h4>🤖 Profiling Tools Use Karo</h4>
+        <p>Manual EDA mat karo. ydata-profiling ya sweetviz ek line mein complete report bana deta hai.</p>
+        <code>from ydata_profiling<br>import ProfileReport<br>ProfileReport(df)</code>
+      </div>
+
+      <div class="time-card">
+        <div class="time-save-badge">3x faster</div>
+        <h4>⌨️ Keyboard Shortcuts Yaad Karo</h4>
+        <p>Excel: Ctrl+Shift+L (filter), Ctrl+T (table). Jupyter: A/B (cell add), DD (delete), Shift+Enter (run). Ek hafte practice → lifetime time save.</p>
+      </div>
+
+      <div class="time-card">
+        <div class="time-save-badge">Lifelong</div>
+        <h4>📁 Folder Structure Fix Karo</h4>
+        <p>Har project mein same structure: /data/raw, /data/clean, /notebooks, /output. 3 mahine baad bhi dhundhna nahi padega.</p>
+        <code>project/<br>├── data/raw/<br>├── data/clean/<br>├── notebooks/<br>└── output/</code>
+      </div>
+
+      <div class="time-card">
+        <div class="time-save-badge">Smart Work</div>
+        <h4>🎯 80/20 Rule Apply Karo</h4>
+        <p>20% key variables 80% answer dete hain. Sab kuch analyze karne ki koshish mat karo. Stakeholder ka actual question kya hai — wahi answer karo.</p>
+      </div>
+
+      <div class="time-card">
+        <div class="time-save-badge">Weekly</div>
+        <h4>📌 Pivot Tables Master Karo</h4>
+        <p>Excel ya Pandas mein pivot tables se 10 minute mein wo analysis hoti hai jisme ghante lagte hain manually.</p>
+        <code>df.pivot_table(<br>  values='sales',<br>  index='city',<br>  aggfunc='sum')</code>
+      </div>
+
+      <div class="time-card">
+        <div class="time-save-badge">Always</div>
+        <h4>📝 Version Control Use Karo</h4>
+        <p>Git use karo ya minimum copy_v1, copy_v2 names rako. "Final_FINAL_useThis.xlsx" wala trap avoid karo — sab ne kiya hai, mat karo.</p>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ═══════════════════════
+       4. BHEED SE ALAG
+  ════════════════════════ -->
+  <div class="section" id="standout">
+    <div class="section-head">
+      <div class="section-num">04</div>
+      <div class="section-meta">
+        <div class="section-label-text">Differentiation</div>
+        <div class="section-title">Bheed Se Alag Dikhne Ke Real Tarike</div>
+      </div>
+    </div>
+
+    <div class="big-quote">
+      <p>"Average analyst data dikhata hai. Achha analyst insights dikhata hai. Great analyst decisions drive karta hai."</p>
+    </div>
+
+    <div class="standout-grid">
+      <div class="standout-card c1">
+        <h4>🎯 Insight, Not Just Data</h4>
+        <p>Sirf numbers mat do. "Sales 20% giri" nahi — "Sales 20% giri kyunki Product X return rate 35% hai — ye fix karo." Business impact wala conclusion do.</p>
+      </div>
+
+      <div class="standout-card c2">
+        <h4>📖 Narrative Banao</h4>
+        <p>Har presentation ek kahani honi chahiye: Problem → Evidence → Insight → Recommendation. Charts mein bhi title sirf label nahi, insight likhao: "Mumbai Outperforms by 40%" — not just "City Comparison".</p>
+      </div>
+
+      <div class="standout-card c3">
+        <h4>🤔 Assumptions Batao</h4>
+        <p>Jo analyst openly bataye "maine ye assume kiya" — woh trusted hota hai. Assumptions chhupa ke confidence dikhana backfire karta hai baad mein.</p>
+      </div>
+
+      <div class="standout-card c4">
+        <h4>❓ Limitations Acknowledge Karo</h4>
+        <p>"Ye analysis sirf last 6 months ka data hai, seasonal effect ho sakta hai" — ye bolna weakness nahi, professionalism hai. Log trust karte hain.</p>
+      </div>
+
+      <div class="standout-card c5">
+        <h4>🎨 Visualization Ka Taste Badhao</h4>
+        <p>Default Excel charts mat use karo. Clean, minimal charts jyada powerful hote hain. Ek achha chart ek kharab presentation ko bhi rescue kar sakta hai.</p>
+      </div>
+
+      <div class="standout-card c6">
+        <h4>💬 Proactively Communicate Karo</h4>
+        <p>"Analysis mein 2 more days lagenge" — ye wait karne ki jagah pehle batao. Stakeholder management = analyst ki superpower. Technical skills se zyada career impact.</p>
+      </div>
+
+      <div class="standout-card c1">
+        <h4>🔁 Reproducible Work Karo</h4>
+        <p>Tera koi bhi code ya analysis koi bhi ek button click se dobara chala sake. Documentation + clean code = professional identity.</p>
+      </div>
+
+      <div class="standout-card c2">
+        <h4>📊 Right Chart Choose Karo</h4>
+        <p>Comparison → Bar. Trend → Line. Part of whole → Pie (max 5 slices). Distribution → Histogram. Relationship → Scatter. Galat chart = galat message.</p>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ═══════════════════════
+       5. GALTIYAN MAT KARO
+  ════════════════════════ -->
+  <div class="section" id="mistakes">
+    <div class="section-head">
+      <div class="section-num">05</div>
+      <div class="section-meta">
+        <div class="section-label-text">Warning Zone</div>
+        <div class="section-title">Ye Galtiyan Bilkul Mat Karo</div>
+      </div>
+    </div>
+
+    <div class="mistake">
+      <div class="mistake-head">
+        <h4>❌ Data Ko Bina Samjhe Use Karna</h4>
+        <span class="mistake-fix">Fix: df.info() + df.describe() pehle</span>
+      </div>
+      <p>Directly analysis karna without understanding data types, missing values, date ranges. Ye sabse common aur sabse badi galti hai. Ek wrong column type pura calculation galat kar deta hai.</p>
+    </div>
+
+    <div class="mistake">
+      <div class="mistake-head">
+        <h4>❌ Correlation = Causation Samajhna</h4>
+        <span class="mistake-fix">Fix: "Associated with" bolna</span>
+      </div>
+      <p>"Ice cream sales badhne se crime badhta hai" — dono summer mein badhte hain. Sirf isliye ki dono trends match karte hain, iska matlab ek doosre ko cause nahi karta. Ye presentation mein bolna career risk hai.</p>
+    </div>
+
+    <div class="mistake">
+      <div class="mistake-head">
+        <h4>❌ Misleading Visuals Banana</h4>
+        <span class="mistake-fix">Fix: Y-axis zero se start karo</span>
+      </div>
+      <p>Y-axis ko 95 pe start karna taaki chhoti si change dramatic lage. Truncated axes, 3D pie charts, dual-axis charts without proper labeling — ye trust todta hai jab koi notice kare.</p>
+    </div>
+
+    <div class="mistake">
+      <div class="mistake-head">
+        <h4>❌ Small Sample Size Pe Big Claims</h4>
+        <span class="mistake-fix">Fix: Sample size hamesha mention karo</span>
+      </div>
+      <p>50 responses pe "Customer 80% satisfied hai" bolna aur ye 5 lakh customers pe apply karna. Statistical significance check karo. Small n = Low confidence.</p>
+    </div>
+
+    <div class="mistake">
+      <div class="mistake-head">
+        <h4>❌ Raw Numbers Dena Without Context</h4>
+        <span class="mistake-fix">Fix: Benchmark, previous period, target ke saath compare karo</span>
+      </div>
+      <p>"10,000 users aa gaye" — ye accha hai ya bura? Last month kya tha? Target kya tha? Industry average kya hai? Context ke bina number meaningless hai.</p>
+    </div>
+
+    <div class="mistake">
+      <div class="mistake-head">
+        <h4>❌ Outliers Ko Blindly Remove Karna</h4>
+        <span class="mistake-fix">Fix: Outlier ka reason dhundho pehle</span>
+      </div>
+      <p>Data entry error alag cheez hai aur genuine extreme value alag. Ek fraud transaction outlier hai — use remove kiya to fraud miss ho jayega. Business context zaroori hai.</p>
+    </div>
+
+    <div class="mistake">
+      <div class="mistake-head">
+        <h4>❌ Overfitting Model Banana</h4>
+        <span class="mistake-fix">Fix: Train-Test split + Cross-validation</span>
+      </div>
+      <p>Training data pe 99% accuracy aur real data pe 60% — model ne data yaad kar liya, seekha nahi. Hamesha unseen test data pe validate karo model ko.</p>
+    </div>
+
+    <div class="mistake">
+      <div class="mistake-head">
+        <h4>❌ Stakeholder Ka Context Na Lena</h4>
+        <span class="mistake-fix">Fix: 15 min discovery call pehle</span>
+      </div>
+      <p>3 din analysis karke woh result dena jo stakeholder chahta hi nahi tha. "Mujhe region wise breakdown chahiye tha, city nahi." — Clarify first, code later.</p>
+    </div>
+
+    <div class="mistake">
+      <div class="mistake-head">
+        <h4>❌ Work Document Nahi Karna</h4>
+        <span class="mistake-fix">Fix: Minimum README ya comments likho</span>
+      </div>
+      <p>6 mahine baad apna hi code samajh nahi aata. Ya team member ne poocha "ye column kahan se aaya?" aur tum bhi nahi jaante. Documentation = future self ka gift.</p>
+    </div>
+
+
+  </div>
+
+
+  <!-- ═══════════════════════
+       6. PROJECT CHECKLIST
+  ════════════════════════ -->
+  <div class="section" id="checklist">
+    <div class="section-head">
+      <div class="section-num">06</div>
+      <div class="section-meta">
+        <div class="section-label-text">Before You Submit</div>
+        <div class="section-title">Har Project Ka Final Checklist</div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="card">
+        <div class="card-title">✅ Analysis Shuru Karne Se Pehle</div>
+        <ul class="checklist">
+          <li><span class="check-icon">☐</span>Business question clearly define hai?</li>
+          <li><span class="check-icon">☐</span>Data source reliable hai?</li>
+          <li><span class="check-icon">☐</span>Data ka time period define hai?</li>
+          <li><span class="check-icon">☐</span>Stakeholder ki expectations clear hain?</li>
+          <li><span class="check-icon">☐</span>Deliverable format decide hai? (dashboard/report/PPT)</li>
+          <li><span class="check-icon">☐</span>Deadline confirm hai?</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-title">✅ Data Cleaning Ke Baad</div>
+        <ul class="checklist">
+          <li><span class="check-icon">☐</span>Missing values handle kiye?</li>
+          <li><span class="check-icon">☐</span>Duplicates remove kiye?</li>
+          <li><span class="check-icon">☐</span>Data types correct hain?</li>
+          <li><span class="check-icon">☐</span>Outliers checked aur documented?</li>
+          <li><span class="check-icon">☐</span>Original raw data preserved hai?</li>
+          <li><span class="check-icon">☐</span>Row count before/after note kiya?</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-title">✅ Analysis Ke Baad</div>
+        <ul class="checklist">
+          <li><span class="check-icon">☐</span>Results sense make karte hain (sanity check)?</li>
+          <li><span class="check-icon">☐</span>Key findings 3 points mein summarize kar sakte ho?</li>
+          <li><span class="check-icon">☐</span>Assumptions documented hain?</li>
+          <li><span class="check-icon">☐</span>Limitations mention kiye?</li>
+          <li><span class="check-icon">☐</span>Charts misleading toh nahi?</li>
+          <li><span class="check-icon">☐</span>Numbers contextualized hain (vs target/last period)?</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-title">✅ Submit Karne Se Pehle</div>
+        <ul class="checklist">
+          <li><span class="check-icon">☐</span>Non-technical audience ko bhi samajh aayega?</li>
+          <li><span class="check-icon">☐</span>Recommendation clear hai (not just findings)?</li>
+          <li><span class="check-icon">☐</span>Spelling/grammar check kiya?</li>
+          <li><span class="check-icon">☐</span>Data source mentioned hai?</li>
+          <li><span class="check-icon">☐</span>File names clean hain?</li>
+          <li><span class="check-icon">☐</span>Kisi colleague ko ek baar dikhaya?</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- DO / DONT FINAL -->
+    <div style="margin-top:28px;">
+      <div class="section-label-text" style="margin-bottom:14px; font-size:11px; font-weight:700; letter-spacing:0.12em; color:var(--muted); text-transform:uppercase;">Summary: Karo vs Mat Karo</div>
+      <div class="do-dont">
+        <div class="do-box">
+          <h4>✓ Ye Karo — Hamesha</h4>
+          <ul>
+            <li>Pehle question define karo, phir data dekho</li>
+            <li>Raw data kabhi overwrite mat karo</li>
+            <li>Insight ke saath recommendation do</li>
+            <li>Simple charts > Complex charts</li>
+            <li>Business language bolao, technical jargon nahi</li>
+            <li>Assumptions openly batao</li>
+            <li>Results cross-verify karo common sense se</li>
+            <li>Template banao baar baar kaam ke liye</li>
+          </ul>
+        </div>
+        <div class="dont-box">
+          <h4>✗ Ye Mat Karo — Kabhi Nahi</h4>
+          <ul>
+            <li>Data dump karo without story</li>
+            <li>Correlation ko causation bolo</li>
+            <li>Y-axis truncate karo impression ke liye</li>
+            <li>Missing values explain nahi karo</li>
+            <li>Small sample pe big generalization karo</li>
+            <li>Analysis bina test kiye live karo</li>
+            <li>Stakeholder se halfway mein poocho "kya chahiye"</li>
+            <li>Pie chart mein 7+ slices rakho</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  Data Analytics Field Guide · Kaam ka, Practical, Result-oriented · <span>No Fluff. Only What Works.</span>
+</footer>
+
+</body>
+</html>
